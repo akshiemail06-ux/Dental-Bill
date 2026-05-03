@@ -225,7 +225,7 @@ export default function BillPreviewPage() {
             phone: '9876543210',
             email: 'contact@smiledental.com',
             currency: '₹',
-            logoUrl: '/logo.png',
+            logoUrl: '/logo.svg',
             stampUrl: 'https://picsum.photos/seed/dental-stamp/200/100',
             signatureUrl: 'https://picsum.photos/seed/dental-sig/200/80',
           });

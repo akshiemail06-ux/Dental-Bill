@@ -29,7 +29,7 @@ export const ClinicProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const demoClinic: Clinic = {
     id: 'demo-clinic',
     name: 'Smile Dental Care',
-    logoUrl: '/logo.png',
+    logoUrl: '/logo.svg',
     doctorName: 'Akshit Bhardwaj',
     doctorQualification: 'BDS, MDS (Orthodontics)',
     doctorRegNumber: 'HN-12345-D',

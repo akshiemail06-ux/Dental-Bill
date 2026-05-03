@@ -40,6 +40,7 @@ import DemoBanner from './DemoBanner';
 import DemoWelcomePopup from './DemoWelcomePopup';
 import TrialEndedModal from './TrialEndedModal';
 import { MissingAssetsAlert } from './MissingAssetsAlert';
+import { Logo } from './Logo';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
@@ -107,8 +108,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="flex h-full flex-col">
           {/* Logo replacement or just Name */}
           <div className="flex items-center gap-3 px-6 py-8">
-            <img src="/logo.png" alt="Logo" className="h-10 w-10 object-contain" />
-            <span className="text-lg font-bold tracking-tight text-gray-900 leading-tight">Instant Dental<br/>Bill</span>
+            <Link to="/">
+              <Logo />
+            </Link>
           </div>
 
           {/* Clinic Info */}

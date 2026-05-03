@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { Logo } from './Logo';
+
 export default function Footer() {
   return (
     <footer className="bg-white border-t py-12 md:py-16 no-print">
@@ -8,11 +10,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2 space-y-4">
-            <Link to="/" className="flex items-center gap-3">
-              <img src="/logo.png" alt="Instant Dental Bill Logo" className="h-8 w-8 object-contain" />
-              <span className="text-xl font-black text-gray-900 tracking-tight">
-                Instant Dental Bill
-              </span>
+            <Link to="/">
+              <Logo />
             </Link>
             <p className="text-gray-500 text-sm max-w-xs leading-relaxed">
               Professional dental billing software designed for speed, accuracy, and simplicity. Generate bills in 10 seconds.
