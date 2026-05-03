@@ -1,0 +1,155 @@
+{
+  "entities": {
+    "Clinic": {
+      "title": "Clinic",
+      "description": "Information about a dental clinic",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Name of the clinic" },
+        "doctorName": { "type": "string", "description": "Name of the doctor" },
+        "address": { "type": "string", "description": "Address of the clinic" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "email": { "type": "string", "description": "Email address" },
+        "gstNumber": { "type": "string", "description": "GST number (optional)" },
+        "logoUrl": { "type": "string", "description": "URL to clinic logo" },
+        "stampUrl": { "type": "string", "description": "URL to clinic stamp" },
+        "signatureUrl": { "type": "string", "description": "URL to doctor signature" },
+        "currency": { "type": "string", "description": "Currency symbol" },
+        "ownerId": { "type": "string", "description": "UID of the clinic owner" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "doctorName", "address", "phone", "email", "ownerId"]
+    },
+    "Bill": {
+      "title": "Bill",
+      "description": "A dental bill generated for a patient",
+      "type": "object",
+      "properties": {
+        "clinicId": { "type": "string", "description": "ID of the clinic" },
+        "patientName": { "type": "string", "description": "Name of the patient" },
+        "patientPhone": { "type": "string", "description": "Phone number of the patient" },
+        "billDate": { "type": "string", "format": "date-time" },
+        "billNumber": { "type": "string", "description": "Auto-generated bill number" },
+        "items": { "type": "array", "description": "List of treatments/procedures" },
+        "discount": { "type": "number", "description": "Discount amount" },
+        "gstEnabled": { "type": "boolean" },
+        "gstPercentage": { "type": "number" },
+        "subtotal": { "type": "number" },
+        "gstAmount": { "type": "number" },
+        "total": { "type": "number" },
+        "notes": { "type": "string" },
+        "paymentStatus": { "type": "string", "enum": ["paid", "unpaid", "partial"] },
+        "paymentMethod": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clinicId", "patientName", "billDate", "billNumber", "items", "total", "paymentStatus"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "clinicId": { "type": "string", "description": "ID of the clinic this user belongs to" },
+        "role": { "type": "string", "enum": ["admin", "staff"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "subscription": {
+          "type": "object",
+          "properties": {
+            "planType": { "type": "string", "enum": ["trial", "basic", "pro", "premium"] },
+            "billsUsed": { "type": "number" },
+            "billLimit": { "type": "string" },
+            "trialStartDate": { "type": "string", "format": "date-time" },
+            "trialEndDate": { "type": "string", "format": "date-time" },
+            "updatedAt": { "type": "string", "format": "date-time" }
+          }
+        }
+      },
+      "required": ["email", "role"]
+    },
+    "Blog": {
+      "title": "Blog",
+      "description": "A blog post",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "metaTitle": { "type": "string" },
+        "metaDescription": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "published"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "slug", "content", "status", "createdAt"]
+    },
+    "OrthoPatient": {
+      "title": "Ortho Patient",
+      "description": "Information about an orthodontics patient and their treatment plan",
+      "type": "object",
+      "properties": {
+        "clinicId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "patientName": { "type": "string" },
+        "mobileNumber": { "type": "string" },
+        "age": { "type": "number" },
+        "gender": { "type": "string", "enum": ["male", "female", "other"] },
+        "startDate": { "type": "string", "format": "date-time" },
+        "treatmentPlan": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "monthlyInstallment": { "type": "number" },
+        "amountPaid": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "nextAppointmentDate": { "type": "string", "format": "date-time" },
+        "notes": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "completed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clinicId", "ownerId", "patientName", "mobileNumber", "treatmentPlan", "totalAmount", "status"]
+    },
+    "OrthoVisit": {
+      "title": "Ortho Visit",
+      "description": "Monthly visit record for an ortho patient",
+      "type": "object",
+      "properties": {
+        "clinicId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "visitDate": { "type": "string", "format": "date-time" },
+        "amountPaid": { "type": "number" },
+        "progressNote": { "type": "string" },
+        "nextAppointmentDate": { "type": "string", "format": "date-time" },
+        "remarks": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["clinicId", "ownerId", "visitDate", "amountPaid", "progressNote", "nextAppointmentDate", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/clinics/{clinicId}": {
+      "schema": "Clinic",
+      "description": "Clinic details"
+    },
+    "/bills/{billId}": {
+      "schema": "Bill",
+      "description": "Bills generated by clinics"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/blogs/{blogId}": {
+      "schema": "Blog",
+      "description": "Blog posts"
+    },
+    "/orthoPatients/{patientId}": {
+      "schema": "OrthoPatient",
+      "description": "Ortho patient management"
+    },
+    "/orthoPatients/{patientId}/visits/{visitId}": {
+      "schema": "OrthoVisit",
+      "description": "Ortho monthly visit history"
+    }
+  }
+}

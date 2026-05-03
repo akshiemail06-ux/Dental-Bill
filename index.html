@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Build Timestamp: 2026-05-03 12:20 UTC -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Best Dental Billing Software in India | Free Demo</title>
+    <meta name="description" content="Manage your dental clinic billing, invoices & reports easily. Try free dental billing software in India with smart features and zero complexity." />
+    <meta name="keywords" content="dental billing software in India, dental clinic management, dental invoice software, free dental billing app" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://instantdentalbill.in" />
+    <meta property="og:title" content="Best Dental Billing Software in India | Free Demo" />
+    <meta property="og:description" content="Manage your dental clinic billing, invoices & reports easily. Try free dental billing software in India with smart features and zero complexity." />
+    <meta property="og:image" content="https://instantdentalbill.in/logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://instantdentalbill.in" />
+    <meta property="twitter:title" content="Best Dental Billing Software in India | Free Demo" />
+    <meta property="twitter:description" content="Manage your dental clinic billing, invoices & reports easily. Try free dental billing software in India with smart features and zero complexity." />
+    <meta property="twitter:image" content="https://instantdentalbill.in/logo.png" />
+
+    <link rel="canonical" href="https://instantdentalbill.in" />
+
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="/manifest.json?v=9" />
+    
+    <!-- Prefetch/Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://firestore.googleapis.com" />
+
+    <!-- Logo & Favicons -->
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <style>
+      #pwa-loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+      }
+      #pwa-loader.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .loader-container {
+        width: 100px;
+        height: 100px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        animation: pulse 2s infinite ease-in-out;
+      }
+      .loader-icon {
+        width: 60px;
+        height: 60px;
+      }
+      .loader-text {
+        color: white;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-weight: 700;
+        font-size: 1.25rem;
+        letter-spacing: -0.025em;
+      }
+      @keyframes pulse {
+        0% { transform: scale(0.95); opacity: 0.8; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(0.95); opacity: 0.8; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pwa-loader">
+      <div class="loader-container">
+        <img 
+          src="/logo.png" 
+          alt="Dental Logo" 
+          class="loader-icon"
+        />
+      </div>
+      <div class="loader-text">Instant Dental Bill</div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('SW registered: ', registration);
+          }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
+

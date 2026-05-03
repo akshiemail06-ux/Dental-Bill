@@ -1,0 +1,290 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: auth.uid
+    // Fields:
+    //   - email: string (required)
+    //   - clinicId: string (optional, set after onboarding)
+    //   - role: string (required, 'admin' or 'staff')
+    //   - createdAt: timestamp (required)
+    //
+    // Collection: clinics
+    // Document ID: clinicId
+    // Fields:
+    //   - name: string (required)
+    //   - doctorName: string (required)
+    //   - address: string (required)
+    //   - phone: string (required)
+    //   - email: string (required)
+    //   - gstNumber: string (optional)
+    //   - logoUrl: string (optional)
+    //   - stampUrl: string (optional)
+    //   - signatureUrl: string (optional)
+    //   - currency: string (optional)
+    //   - ownerId: string (required)
+    //   - doctors: list (required)
+    //   - createdAt: timestamp (required)
+    //   - updatedAt: timestamp (required)
+    //
+    // Collection: bills
+    // Document ID: billId
+    // Fields:
+    //   - clinicId: string (required)
+    //   - patientName: string (required)
+    //   - patientPhone: string (optional)
+    //   - billDate: timestamp (required)
+    //   - billNumber: string (required)
+    //   - items: list (required)
+    //   - discount: number (optional)
+    //   - gstEnabled: bool (optional)
+    //   - gstPercentage: number (optional)
+    //   - subtotal: number (required)
+    //   - gstAmount: number (optional)
+    //   - total: number (required)
+    //   - notes: string (optional)
+    //   - paymentStatus: string (required, 'paid'|'unpaid'|'partial')
+    //   - paymentMethod: string (optional)
+    //   - createdAt: timestamp (required)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerified() {
+      // Mandate email verification for all state-changing operations
+      // EXCEPT for the main developer email for easier setup/testing
+      // Update: Loosened to allow non-verified users to start using the app initially
+      // but still checking for isSignedIn.
+      return isSignedIn();
+    }
+
+    // Simplified isAuthenticated for read operations (doesn't force email verification)
+    function isAuthenticated() {
+      return isSignedIn();
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    // Helper to check clinic membership WITHOUT get() where possible
+    // For listing, we prefer checking resource.data directly
+    function belongsToClinic(clinicId) {
+      return isAuthenticated() && (
+        (getUserData() != null && getUserData().clinicId == clinicId) || 
+        (exists(/databases/$(database)/documents/clinics/$(clinicId)) && 
+         get(/databases/$(database)/documents/clinics/$(clinicId)).data.ownerId == request.auth.uid)
+      );
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.size() <= 200 && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidString(val, min, max) {
+      return val is string && val.size() >= min && val.size() <= max;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Validation Blueprints
+    function isValidClinic(data) {
+      return data.keys().hasAll(['name', 'doctorName', 'address', 'phone', 'email', 'ownerId', 'doctors']) &&
+             data.name is string && data.name.size() >= 1 && data.name.size() <= 200 &&
+             data.doctorName is string && data.doctorName.size() >= 1 && data.doctorName.size() <= 200 &&
+             data.address is string && data.address.size() <= 500 &&
+             data.phone is string && data.phone.size() <= 50 &&
+             data.email is string && data.email.size() <= 200 &&
+             data.doctors is list &&
+             data.ownerId == request.auth.uid;
+    }
+
+    function isValidBill(data) {
+      return data.keys().hasAll(['clinicId', 'ownerId', 'patientName', 'billDate', 'billNumber', 'items', 'total', 'paymentStatus']) &&
+             isValidId(data.clinicId) &&
+             data.ownerId == request.auth.uid &&
+             isValidString(data.patientName, 1, 200) &&
+             data.items is list &&
+             data.items.size() <= 100 &&
+             data.total is number &&
+             data.paymentStatus in ['paid', 'unpaid', 'partial', 'draft'];
+    }
+
+    function isValidOrthoPatient(data) {
+      return data.keys().hasAll(['clinicId', 'ownerId', 'patientName', 'mobileNumber', 'treatmentPlan', 'totalAmount', 'status', 'createdAt']) &&
+             isValidId(data.clinicId) &&
+             data.ownerId == request.auth.uid &&
+             isValidString(data.patientName, 1, 200) &&
+             data.totalAmount is number &&
+             data.status in ['active', 'completed'];
+    }
+
+    function isValidOrthoVisit(data) {
+      return data.keys().hasAll(['clinicId', 'ownerId', 'visitDate', 'amountPaid', 'progressNote', 'nextAppointmentDate', 'createdAt']) &&
+             isValidId(data.clinicId) &&
+             data.ownerId == request.auth.uid &&
+             data.amountPaid is number &&
+             isValidString(data.progressNote, 0, 1000);
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId); // Allow querying own document
+      allow create: if isOwner(userId) && 
+                      incoming().keys().hasAll(['email', 'role', 'createdAt']) &&
+                      incoming().role in ['admin', 'staff'] &&
+                      (incoming().email == null || isValidEmail(incoming().email));
+      allow update: if isOwner(userId) && 
+                      incoming().diff(existing()).affectedKeys().hasOnly(['clinicId', 'email', 'role', 'updatedAt', 'createdAt', 'subscription']) &&
+                      (incoming().role == existing().role || isSuperAdmin());
+    }
+
+    function isSuperAdmin() {
+      return request.auth.token.email in ["akshiemail06@gmail.com", "harinderkumar6886@gmail.com"];
+    }
+
+    // Clinics collection
+    match /clinics/{clinicId} {
+      allow get: if isAuthenticated() && (existing().ownerId == request.auth.uid || getUserData().clinicId == clinicId);
+      allow list: if isAuthenticated() && resource.data.ownerId == request.auth.uid;
+      allow create: if isVerified() && 
+                      isValidClinic(incoming()) &&
+                      incoming().createdAt == request.time &&
+                      incoming().updatedAt == request.time;
+      allow update: if isVerified() && 
+                      existing().ownerId == request.auth.uid &&
+                      isValidClinic(incoming()) &&
+                      incoming().ownerId == existing().ownerId &&
+                      incoming().updatedAt == request.time;
+      allow delete: if false;
+    }
+
+    // Bills collection
+    match /bills/{billId} {
+      allow get: if true; 
+      
+      // Cost Optimized List: Check UID directly if possible to avoid get()
+      allow list: if isAuthenticated() && (
+        resource.data.ownerId == request.auth.uid || 
+        belongsToClinic(resource.data.clinicId)
+      );
+
+      allow create: if isVerified() && 
+                      isValidBill(incoming()) &&
+                      incoming().createdAt == request.time;
+
+      allow update: if isVerified() && (existing().ownerId == request.auth.uid || belongsToClinic(existing().clinicId)) &&
+                      isValidBill(incoming()) &&
+                      incoming().ownerId == existing().ownerId &&
+                      incoming().clinicId == existing().clinicId;
+      
+      allow delete: if isVerified() && (
+        existing().ownerId == request.auth.uid || 
+        get(/databases/$(database)/documents/clinics/$(existing().clinicId)).data.ownerId == request.auth.uid
+      );
+    }
+
+    // Notifications collection
+    match /notifications/{notifId} {
+      allow get: if isAuthenticated() && (
+        existing().userId == request.auth.uid || 
+        belongsToClinic(existing().clinicId)
+      );
+      allow list: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid || 
+        belongsToClinic(resource.data.clinicId)
+      );
+      allow create: if standsVerifiedOrSelf(incoming());
+      allow update: if standsVerifiedOrSelf(existing());
+      allow delete: if isVerified() && (existing().userId == request.auth.uid);
+
+      function standsVerifiedOrSelf(data) {
+        return isVerified() || (isAuthenticated() && data.userId == request.auth.uid);
+      }
+    }
+
+    // Ortho Patients collection
+    match /orthoPatients/{patientId} {
+      allow get, list: if isAuthenticated() && (
+        resource.data.ownerId == request.auth.uid || 
+        belongsToClinic(resource.data.clinicId)
+      );
+      allow create: if isVerified() && 
+                      isValidOrthoPatient(incoming()) &&
+                      incoming().createdAt == request.time;
+      allow update: if isVerified() && (existing().ownerId == request.auth.uid || belongsToClinic(existing().clinicId)) &&
+                      isValidOrthoPatient(incoming()) &&
+                      incoming().ownerId == existing().ownerId &&
+                      incoming().clinicId == existing().clinicId;
+      allow delete: if isVerified() && (existing().ownerId == request.auth.uid);
+
+      // Subcollection for visits
+      match /visits/{visitId} {
+        allow get, list: if isAuthenticated() && (
+          get(/databases/$(database)/documents/orthoPatients/$(patientId)).data.ownerId == request.auth.uid ||
+          belongsToClinic(get(/databases/$(database)/documents/orthoPatients/$(patientId)).data.clinicId)
+        );
+        allow create: if isVerified() && 
+                        isValidOrthoVisit(incoming()) &&
+                        (get(/databases/$(database)/documents/orthoPatients/$(patientId)).data.ownerId == request.auth.uid ||
+                         belongsToClinic(get(/databases/$(database)/documents/orthoPatients/$(patientId)).data.clinicId));
+        allow update, delete: if isVerified() && (
+                                 get(/databases/$(database)/documents/orthoPatients/$(patientId)).data.ownerId == request.auth.uid ||
+                                 belongsToClinic(get(/databases/$(database)/documents/orthoPatients/$(patientId)).data.clinicId)
+                               );
+      }
+    }
+
+    // Collection Group Rule for visits (Required for Dashboard collectionGroup query)
+    match /{path=**}/visits/{visitId} {
+      allow list: if isAuthenticated() && (
+        resource.data.ownerId == request.auth.uid ||
+        // For collection group queries, we can't easily check parent doc without a get()
+        // but we can check if the user belongs to the clinic specified in the visit data
+        belongsToClinic(resource.data.clinicId)
+      );
+    }
+
+    // Blogs collection
+    match /blogs/{blogId} {
+      allow read: if existing().status == 'published' || (isAuthenticated() && request.auth.token.email == "akshiemail06@gmail.com");
+      allow write: if isVerified() && request.auth.token.email == "akshiemail06@gmail.com";
+    }
+
+  }
+}
