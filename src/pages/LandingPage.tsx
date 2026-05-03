@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { 
-  Stethoscope, 
   FileText, 
   BarChart3, 
   ShieldCheck, 
