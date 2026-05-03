@@ -16,7 +16,7 @@ import {
   AlertCircle,
   Check,
   Target,
-  Sparkle
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../contexts/AuthContext';
@@ -170,7 +170,7 @@ export default function LandingPage() {
                 transition={{ delay: 0.8 }}
                 className="absolute -top-12 left-1/2 -translate-x-40 text-blue-400 hidden lg:block"
               >
-                <Sparkle size={48} fill="currentColor" />
+                <Sparkles size={48} fill="currentColor" />
               </motion.div>
 
               <motion.h1 

@@ -1,9 +1,9 @@
-const CACHE_NAME = 'dental-bill-v10';
+const CACHE_NAME = 'dental-bill-v11';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/manifest.json?v=10',
+  '/manifest.json?v=11',
   '/logo.png'
 ];
 
