@@ -106,7 +106,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       )}>
         <div className="flex h-full flex-col">
           {/* Logo replacement or just Name */}
-          <div className="flex items-center gap-2 px-6 py-8">
+          <div className="flex items-center gap-3 px-6 py-8">
+            <img src="/logo.png" alt="Logo" className="h-10 w-10 object-contain" />
             <span className="text-lg font-bold tracking-tight text-gray-900 leading-tight">Instant Dental<br/>Bill</span>
           </div>
 
