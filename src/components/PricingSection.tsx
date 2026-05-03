@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Zap, Star, ShieldCheck, Sparkle } from 'lucide-react';
+import { Check, Zap, Star, ShieldCheck, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
@@ -97,7 +97,7 @@ const PricingSection = () => {
             <div className="relative flex flex-col sm:flex-row items-center gap-4 bg-white px-8 py-4 rounded-2xl border border-blue-100 shadow-sm">
               <div className="flex -space-x-2">
                  <div className="h-10 w-10 rounded-full bg-blue-600 flex items-center justify-center text-white ring-2 ring-white">
-                  <Sparkle size={20} fill="currentColor" />
+                  <Sparkles size={20} fill="currentColor" />
                 </div>
               </div>
               <div className="text-center sm:text-left">

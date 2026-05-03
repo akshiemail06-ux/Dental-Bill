@@ -108,7 +108,16 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <div className="flex flex-grow items-center justify-center p-4">
+      <div className="flex flex-grow flex-col items-center justify-center p-4">
+        <Link to="/" className="mb-8 flex flex-col items-center gap-2 group">
+          <div className="h-16 w-16 bg-white rounded-2xl shadow-xl flex items-center justify-center border border-blue-50 group-hover:scale-105 transition-transform">
+            <img src="/logo.png" alt="Logo" className="h-12 w-12 object-contain" />
+          </div>
+          <div className="text-center">
+            <span className="text-xl font-bold tracking-tight text-gray-900 block">Instant Dental Bill</span>
+            <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Smart Clinic ERP</span>
+          </div>
+        </Link>
         <Card className="w-full max-w-md border-none shadow-xl">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold tracking-tight">Welcome back</CardTitle>

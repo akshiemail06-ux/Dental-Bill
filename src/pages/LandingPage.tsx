@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { 
-  Stethoscope, 
   FileText, 
   BarChart3, 
   ShieldCheck, 
@@ -17,7 +16,7 @@ import {
   AlertCircle,
   Check,
   Target,
-  Sparkle
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../contexts/AuthContext';
@@ -123,12 +122,13 @@ export default function LandingPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
+            <img src="/logo.png" alt="Instant Dental Bill Logo" className="h-10 w-10 object-contain" />
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight text-gray-900 leading-tight">Instant Dental Bill</span>
               <span className="text-[10px] font-bold text-blue-600 uppercase tracking-[0.2em] leading-none">Smart Clinic ERP</span>
             </div>
-          </div>
+          </Link>
           <div className="flex items-center gap-4">
             <a 
               href="#pricing" 
@@ -154,8 +154,8 @@ export default function LandingPage() {
             <div className="absolute left-1/2 top-[-10%] h-[800px] w-[800px] -translate-x-1/2 rounded-full bg-blue-100/20 blur-[130px]"></div>
             
             {/* Background Medical/Dental Decor */}
-            <div className="absolute left-[10%] top-[20%] opacity-[0.05] animate-pulse">
-              <Stethoscope size={120} className="text-blue-600 rotate-12" />
+            <div className="absolute left-[10%] top-[20%] opacity-[0.08] animate-pulse">
+              <img src="/logo.png" alt="" className="w-24 h-24 rotate-12" />
             </div>
             <div className="absolute right-[15%] bottom-[10%] opacity-[0.05] animate-pulse delay-700">
               <Target size={100} className="text-blue-600 -rotate-12" />
@@ -170,7 +170,7 @@ export default function LandingPage() {
                 transition={{ delay: 0.8 }}
                 className="absolute -top-12 left-1/2 -translate-x-40 text-blue-400 hidden lg:block"
               >
-                <Sparkle size={48} fill="currentColor" />
+                <Sparkles size={48} fill="currentColor" />
               </motion.div>
 
               <motion.h1 
@@ -230,8 +230,8 @@ export default function LandingPage() {
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(#2563eb10_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
           <div className="mx-auto max-w-4xl px-4 text-center">
             <div className="inline-flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
-                <Stethoscope size={18} />
+              <div className="h-10 w-10 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-100 overflow-hidden">
+                <img src="/logo.png" alt="" className="h-8 w-8 brightness-0 invert" />
               </div>
               <span className="font-bold text-gray-900 uppercase tracking-widest text-xs">Built For Dentists</span>
             </div>
@@ -427,8 +427,8 @@ export default function LandingPage() {
             <div className="flex flex-col md:flex-row items-center gap-12 bg-white p-8 sm:p-12 rounded-[40px] border border-gray-100 shadow-sm">
               <div className="relative flex-shrink-0">
                 <div className="h-44 w-44 rounded-[40px] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100/50 overflow-hidden shadow-sm transform -rotate-3 hover:rotate-0 transition-all duration-500 flex items-center justify-center">
-                  <div className="p-8 rounded-full bg-white/80 shadow-inner">
-                    <Stethoscope size={56} className="text-blue-600 opacity-80" strokeWidth={1.5} />
+                  <div className="p-6 rounded-3xl bg-white/80 shadow-inner">
+                    <img src="/logo.png" alt="Founder Icon" className="h-20 w-20 opacity-90" />
                   </div>
                 </div>
                 <div className="absolute -bottom-3 -right-3 bg-white text-blue-600 p-3 rounded-2xl shadow-xl border border-blue-50">
