@@ -1,5 +1,5 @@
 <svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="200" cy="200" r="200" fill="#2563EB"/>
+  <rect width="400" height="400" fill="#2563EB"/>
   <!-- IdB Monogram -->
   <text x="50" y="270" fill="white" font-family="sans-serif" font-weight="900" font-size="180" letter-spacing="-10">IdB</text>
   <!-- Small Tooth Accent -->

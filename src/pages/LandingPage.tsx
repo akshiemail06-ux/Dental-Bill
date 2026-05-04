@@ -53,22 +53,22 @@ export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-white relative">
       <Helmet>
-        <title>Best Dental Billing Software in India | Free Demo</title>
-        <meta name="description" content="Manage your dental clinic billing, invoices & reports easily. Try free dental billing software in India with smart features and zero complexity." />
-        <meta name="keywords" content="dental billing software in India, dental clinic management, dental invoice software, free dental billing app" />
+        <title>Best Dental Billing Software in India | Instant Dental Bill</title>
+        <meta name="description" content="Instant Dental Bill is the best dental billing software in India for modern dental clinics. Manage patient invoices, medical records, and clinic attendance with zero effort. Get a free demo today!" />
+        <meta name="keywords" content="Best Dental Billing Software in India, best dental ERP India, dental clinic management software, dental billing app India" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://instantdentalbill.in" />
-        <meta property="og:title" content="Best Dental Billing Software in India | Free Demo" />
-        <meta property="og:description" content="Manage your dental clinic billing, invoices & reports easily. Try free dental billing software in India with smart features and zero complexity." />
+        <meta property="og:title" content="Best Dental Billing Software in India | Instant Dental Bill" />
+        <meta property="og:description" content="Instant Dental Bill is the best dental billing software in India. Modernize your practice with smart billing and easy patient management." />
         <meta property="og:image" content="https://instantdentalbill.in/logo.svg" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://instantdentalbill.in" />
-        <meta property="twitter:title" content="Best Dental Billing Software in India | Free Demo" />
-        <meta property="twitter:description" content="Manage your dental clinic billing, invoices & reports easily. Try free dental billing software in India with smart features and zero complexity." />
+        <meta property="twitter:title" content="Best Dental Billing Software in India | Instant Dental Bill" />
+        <meta property="twitter:description" content="Instant Dental Bill is the best dental billing software in India. Modernize your practice with smart billing and easy patient management." />
         <meta property="twitter:image" content="https://instantdentalbill.in/logo.svg" />
 
         <link rel="canonical" href="https://instantdentalbill.in" />
