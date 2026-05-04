@@ -152,7 +152,7 @@ export default function LandingPage() {
             
             {/* Background Medical/Dental Decor */}
             <div className="absolute left-[10%] top-[20%] opacity-[0.08] animate-pulse">
-              <Logo showText={false} iconClassName="h-24 w-24 rounded-3xl" />
+              <Logo showText={false} iconClassName="h-24 w-24 rounded-full" />
             </div>
             <div className="absolute right-[15%] bottom-[10%] opacity-[0.05] animate-pulse delay-700">
               <Target size={100} className="text-blue-600 -rotate-12" />
@@ -422,8 +422,8 @@ export default function LandingPage() {
             <div className="flex flex-col md:flex-row items-center gap-12 bg-white p-8 sm:p-12 rounded-[40px] border border-gray-100 shadow-sm">
               <div className="relative flex-shrink-0">
                 <div className="h-44 w-44 rounded-[40px] bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100/50 overflow-hidden shadow-sm transform -rotate-3 hover:rotate-0 transition-all duration-500 flex items-center justify-center">
-                  <div className="p-6 rounded-3xl bg-white/80 shadow-inner">
-                    <Logo showText={false} iconClassName="h-20 w-20 rounded-3xl shadow-none" />
+                  <div className="p-6 rounded-full bg-white/80 shadow-inner">
+                    <Logo showText={false} iconClassName="h-20 w-20 rounded-full shadow-none" />
                   </div>
                 </div>
                 <div className="absolute -bottom-3 -right-3 bg-white text-blue-600 p-3 rounded-2xl shadow-xl border border-blue-50">

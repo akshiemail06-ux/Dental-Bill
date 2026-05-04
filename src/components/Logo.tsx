@@ -1,5 +1,4 @@
 import React from 'react';
-import { Stethoscope } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
@@ -9,6 +8,38 @@ interface LogoProps {
   subtitleClassName?: string;
   showText?: boolean;
 }
+
+const IdBLogoIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    {/* Small Tooth Accent */}
+    <path 
+      d="M17 4.5C17 3.5 16.2 3 15.5 3C14.8 3 14.5 3.5 14.5 4.5C14.5 5.5 15 6.5 15 8C15 9.5 14.5 10.5 14.5 11C14.5 11.5 15 11.5 15.5 11.5C16 11.5 17 11.5 17.5 10.5C18 9.5 18 8 18 6.5C18 5 17 4.5 17 4.5Z" 
+      fill="currentColor"
+      className="opacity-90"
+    />
+    {/* IdB Text */}
+    <text 
+      x="2" 
+      y="18" 
+      fill="currentColor" 
+      style={{ 
+        fontFamily: 'system-ui, sans-serif', 
+        fontWeight: '900', 
+        fontSize: '14px',
+        letterSpacing: '-1px'
+      }}
+    >
+      IdB
+    </text>
+  </svg>
+);
 
 export function Logo({ 
   className, 
@@ -20,11 +51,10 @@ export function Logo({
   return (
     <div className={cn("flex items-center gap-3 group", className)}>
       <div className={cn(
-        "relative flex items-center justify-center h-10 w-10 rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform duration-300",
+        "relative flex items-center justify-center h-10 w-10 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform duration-300",
         iconClassName
       )}>
-        <Stethoscope size={24} strokeWidth={2.5} />
-        <div className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 border-2 border-white rounded-full"></div>
+        <IdBLogoIcon size={22} />
       </div>
       
       {showText && (

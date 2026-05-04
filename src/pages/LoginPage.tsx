@@ -112,7 +112,7 @@ export default function LoginPage() {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <div className="flex flex-grow flex-col items-center justify-center p-4">
         <Link to="/" className="mb-8">
-          <Logo iconClassName="h-16 w-16 rounded-2xl" textClassName="text-2xl" />
+          <Logo iconClassName="h-16 w-16 rounded-full" textClassName="text-2xl" />
         </Link>
         <Card className="w-full max-w-md border-none shadow-xl">
         <CardHeader className="space-y-1 text-center">
