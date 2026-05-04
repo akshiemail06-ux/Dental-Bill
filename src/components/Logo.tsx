@@ -24,7 +24,7 @@ const IdBLogoIcon = ({ size = 24, className = "" }: { size?: number, className?:
       dominantBaseline="middle" 
       textAnchor="middle" 
       fill="currentColor" 
-      style={{ fontFamily: 'sans-serif', fontWeight: 900, fontSize: '260px', letterSpacing: '-14px' }}
+      style={{ fontFamily: 'sans-serif', fontWeight: 900, fontSize: '300px', letterSpacing: '-14px' }}
     >
       IdB
     </text>

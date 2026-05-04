@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Info } from 'lucide-react';
+import { Check, Info, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -63,12 +63,39 @@ export default function PricingPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <div className="text-center space-y-4 mb-16">
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        {/* 30 Day Trial Banner */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mb-12 relative overflow-hidden bg-blue-600 rounded-3xl p-8 text-white shadow-2xl shadow-blue-200"
+        >
+          <div className="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 translate-y-1/4 -translate-x-1/4 w-48 h-48 bg-blue-400/20 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold mb-3 border border-white/30">
+                <Sparkles size={14} className="text-yellow-300" /> SPECIAL OFFER
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-2">30-Day Free Trial</h2>
+              <p className="text-blue-50 text-lg font-medium opacity-90 max-w-xl">
+                Experience full access to all features—unlimited bills, reports, and AI management. 
+                No credit card required. No commitment.
+              </p>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="text-5xl font-black">₹0</div>
+              <div className="text-sm font-bold text-blue-100 italic">For First 30 Days</div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="text-center space-y-4 mb-20">
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl"
+            className="text-4xl font-extrabold text-gray-900 tracking-tight sm:text-6xl"
           >
             Simple, Transparent Pricing
           </motion.h1>
@@ -76,13 +103,13 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="max-w-2xl mx-auto text-xl text-gray-500"
+            className="max-w-2xl mx-auto text-xl text-gray-500 font-medium"
           >
             Invest in your clinic's growth with our funny yet serious plans.
           </motion.p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-12 lg:grid-cols-3 pt-8">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.name}

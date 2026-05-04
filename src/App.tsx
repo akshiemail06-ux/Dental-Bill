@@ -62,7 +62,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading, isAuthReady } = useAuth();
-  const ADMIN_EMAIL = "akshiemail06@gmail.com";
+  const ADMIN_EMAILS = ["akshiemail06@gmail.com", "akshitb948@gmail.com"];
 
   if (loading || !isAuthReady) {
     return <LoadingFallback message="Verifying Admin..." />;
@@ -70,7 +70,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (!user) return <Navigate to="/login" state={{ from: window.location.pathname }} replace />;
   
-  if (user.email !== ADMIN_EMAIL) {
+  if (!user.email || !ADMIN_EMAILS.includes(user.email)) {
     return <Navigate to="/dashboard" replace />;
   }
 

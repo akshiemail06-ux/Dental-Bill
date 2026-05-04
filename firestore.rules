@@ -175,7 +175,7 @@ service cloud.firestore {
     }
 
     function isSuperAdmin() {
-      return request.auth.token.email in ["akshiemail06@gmail.com", "harinderkumar6886@gmail.com"];
+      return request.auth.token.email in ["akshiemail06@gmail.com", "harinderkumar6886@gmail.com", "akshitb948@gmail.com"];
     }
 
     // Clinics collection
@@ -282,8 +282,8 @@ service cloud.firestore {
 
     // Blogs collection
     match /blogs/{blogId} {
-      allow read: if existing().status == 'published' || (isAuthenticated() && request.auth.token.email == "akshiemail06@gmail.com");
-      allow write: if isVerified() && request.auth.token.email == "akshiemail06@gmail.com";
+      allow read: if existing().status == 'published' || (isAuthenticated() && request.auth.token.email in ["akshiemail06@gmail.com", "akshitb948@gmail.com"]);
+      allow write: if isVerified() && request.auth.token.email in ["akshiemail06@gmail.com", "akshitb948@gmail.com"];
     }
 
   }

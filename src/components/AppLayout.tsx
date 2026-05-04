@@ -50,7 +50,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, isDemo, setIsDemo } = useAuth();
   const { subscription, isTrialExpired } = useSubscription();
   const { isInstallable, installApp } = usePWA();
-  const ADMIN_EMAIL = "akshiemail06@gmail.com";
+  const ADMIN_EMAILS = ["akshiemail06@gmail.com", "akshitb948@gmail.com"];
 
 
   const navItems = [
@@ -63,8 +63,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     { name: 'Troubleshoot', path: '/troubleshoot', icon: HelpCircle },
   ];
 
-  // Add Blog Admin for the specific admin user
-  if (user?.email === ADMIN_EMAIL) {
+  // Add Blog Admin for the specific admin users
+  if (user?.email && ADMIN_EMAILS.includes(user.email)) {
     navItems.push({ name: 'Blog Admin', path: '/admin/blog', icon: BookOpen });
   }
 
@@ -137,7 +137,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          {subscription?.planType === 'trial' && (
+          {subscription?.planType && subscription.planType !== 'premium' && (
             <div className="px-6 mb-6">
               <Button 
                 onClick={() => navigate('/pricing')}
