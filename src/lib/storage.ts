@@ -15,10 +15,12 @@ export const uploadClinicAsset = async (
   console.log(`Starting local storage for ${assetType}...`);
   try {
     // 1. Compress image
-    const maxWidth = assetType === 'signature' ? 600 : 512;
-    const compressedDataUrl = await compressImage(dataUrl, maxWidth, 0.85);
+    // Signatures and stamps need transparency (PNG), so we reduce size by lowering resolution
+    // Logos can be JPEG or PNG.
+    const maxWidth = assetType === 'signature' ? 400 : assetType === 'stamp' ? 300 : 300;
+    const compressedDataUrl = await compressImage(dataUrl, maxWidth, 0.82);
     
-    // 2. Save to Local IndexedDB
+    // 2. Save to Local IndexedDB for offline support/fallback
     const localKey = doctorId 
       ? `clinic-asset:${clinicId}:signature:${doctorId}`
       : `clinic-asset:${clinicId}:${assetType}`;
@@ -26,8 +28,8 @@ export const uploadClinicAsset = async (
     console.log(`Saving to local storage with key: ${localKey}`);
     await saveLocalAsset(localKey, compressedDataUrl);
     
-    // Return the local key as the reference to be stored in Firestore
-    return `local-asset:${localKey}`;
+    // Return the actual compressed data URL so it can be stored in Firestore for all devices to access
+    return compressedDataUrl;
   } catch (error) {
     console.error(`Error saving local ${assetType}:`, error);
     throw error;

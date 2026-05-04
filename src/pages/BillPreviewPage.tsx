@@ -560,22 +560,22 @@ ${billLink}`;
                     <img src={clinic.logoUrl} alt="Logo" className="h-16 w-auto object-contain" referrerPolicy="no-referrer" crossOrigin="anonymous" />
                   )}
                   <div className="flex flex-col justify-center">
-                    <h2 className="text-xl font-semibold text-slate-900 uppercase tracking-tight leading-none mb-1.5">{clinic?.name || 'City Dental Care'}</h2>
+                    <h2 className="text-xl font-semibold text-slate-900 uppercase tracking-tight leading-none mb-1.5">{clinic?.name || bill?.clinicName || 'Clinic Name'}</h2>
                     <div className="text-[9px] font-medium text-slate-500 uppercase tracking-widest space-y-0.5 opacity-70">
-                      <p className="max-w-[280px] leading-relaxed">{clinic?.address}</p>
+                      <p className="max-w-[280px] leading-relaxed">{clinic?.address || bill?.clinicAddress}</p>
                       <div className="flex flex-col space-y-0.5">
                         <div className="flex items-center gap-1">
                           <Phone size={8} className="text-slate-400" />
-                          <span>{clinic?.phone}</span>
+                          <span>{clinic?.phone || bill?.clinicPhone}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Mail size={8} className="text-slate-400" />
-                          <span className="lowercase tracking-normal">{clinic?.email}</span>
+                          <span className="lowercase tracking-normal">{clinic?.email || bill?.clinicEmail}</span>
                         </div>
-                        {bill.gstEnabled && clinic?.gstNumber && (
+                        {(bill.gstEnabled && (clinic?.gstNumber || bill?.clinicGst)) && (
                           <div className="flex items-center gap-1 pt-0.5 opacity-60">
                             <span className="text-slate-400 text-[7px] font-black uppercase tracking-widest">GSTIN</span>
-                            <span className="text-slate-900 border-b border-slate-100 font-bold tracking-widest">{clinic.gstNumber}</span>
+                            <span className="text-slate-900 border-b border-slate-100 font-bold tracking-widest">{clinic?.gstNumber || bill?.clinicGst}</span>
                           </div>
                         )}
                       </div>
@@ -737,7 +737,7 @@ ${billLink}`;
                         </div>
                       )}
                     </div>
-                    <p className="text-[7px] font-black text-slate-300 uppercase tracking-[0.1px] leading-none text-center truncate w-full px-2">{clinic?.name || 'City Dental Care'}</p>
+                    <p className="text-[7px] font-black text-slate-300 uppercase tracking-[0.1px] leading-none text-center truncate w-full px-2">{clinic?.name || bill?.clinicName || 'Clinic Name'}</p>
                   </div>
 
                   {/* Signature Area */}
@@ -766,7 +766,7 @@ ${billLink}`;
                 {/* Professional Footer Message */}
                 <div className="text-center mt-4 pt-3 border-t border-slate-100/60 print:mt-4">
                    <p className="text-[10px] font-medium text-slate-600 tracking-[0.05em] leading-relaxed">
-                    Thank you for visiting <span className="font-semibold">{clinic?.name || 'our clinic'}</span>. Wishing you a healthy smile always.
+                    Thank you for visiting <span className="font-semibold">{clinic?.name || bill?.clinicName || 'our clinic'}</span>. Wishing you a healthy smile always.
                    </p>
                 </div>
 

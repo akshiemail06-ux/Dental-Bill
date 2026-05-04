@@ -1,5 +1,4 @@
 import * as React from "react"
-import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -47,21 +46,20 @@ function Button({
   size = "default",
   asChild,
   ...props
-}: ButtonPrimitive.Props &
+}: React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & { asChild?: boolean }) {
   if (asChild) {
-    const { children, ...rest } = props
-    return (
-      <ButtonPrimitive
-        data-slot="button"
-        className={cn(buttonVariants({ variant, size, className }))}
-        render={children as React.ReactElement}
-        {...rest}
-      />
-    )
+    // Note: asChild is normally handled by standard Radix Slot but here we just render children if it is a single element
+    const { children } = props as any;
+    if (React.isValidElement(children)) {
+      return React.cloneElement(children as React.ReactElement<any>, {
+        className: cn(buttonVariants({ variant, size, className }), children.props.className),
+        ...props
+      });
+    }
   }
   return (
-    <ButtonPrimitive
+    <button
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}

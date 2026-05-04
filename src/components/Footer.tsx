@@ -4,6 +4,14 @@ import { Link } from 'react-router-dom';
 import { Logo } from './Logo';
 
 export default function Footer() {
+  const scrollToFeatures = (e: React.MouseEvent) => {
+    const featuresSection = document.getElementById('features');
+    if (featuresSection) {
+      e.preventDefault();
+      featuresSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-white border-t py-12 md:py-16 no-print">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +37,13 @@ export default function Footer() {
                 <Link to="/signup" className="text-sm text-gray-500 hover:text-blue-600 transition-colors">Sign Up</Link>
               </li>
               <li>
-                <Link to="/" className="text-sm text-gray-500 hover:text-blue-600 transition-colors">Features</Link>
+                <Link 
+                  to="/#features" 
+                  onClick={scrollToFeatures}
+                  className="text-sm text-gray-500 hover:text-blue-600 transition-colors"
+                >
+                  Features
+                </Link>
               </li>
               <li>
                 <Link to="/blog" className="text-sm text-gray-500 hover:text-blue-600 transition-colors">Blog</Link>

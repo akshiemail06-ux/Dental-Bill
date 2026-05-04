@@ -27,7 +27,7 @@ export default function DemoBanner() {
           <div className="bg-white/20 rounded-full p-1">
             <Info size={14} />
           </div>
-          <span>Demo Mode – Exploring with sample data</span>
+          <span>Demo Mode: Exploring with sample data</span>
         </div>
         
         <div className="flex items-center gap-2">

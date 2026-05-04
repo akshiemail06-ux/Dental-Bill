@@ -16,7 +16,8 @@ import { toast } from 'sonner';
 import ImageCropper from '../components/ImageCropper';
 import { makeBackgroundTransparent } from '../lib/imageUtils';
 import { uploadClinicAsset, deleteClinicAsset } from '../lib/storage';
-import { Doctor } from '../types';
+import { getLocalAsset } from '../lib/localStore';
+import { Doctor, Clinic } from '../types';
 import { useSearchParams } from 'react-router-dom';
 
 export default function SettingsPage() {
@@ -149,8 +150,8 @@ export default function SettingsPage() {
         setFormData({ ...formData, [currentField]: finalImage });
       }
 
-      // Step 3: Update Firestore with the LOCAL REFERENCE
-      // This tells other devices/reloads where to look in IndexedDB
+      // Step 3: Update Firestore with the IMAGE DATA
+      // This ensures other devices (like patients viewing bills) can see the assets
       if (type === 'signature' && currentDoctorId) {
         const updatedDoctors = doctors.map(d => {
           const isTarget = d.id === currentDoctorId;
@@ -160,38 +161,24 @@ export default function SettingsPage() {
             qualification: d.qualification || '',
             registrationNumber: (d.registrationNumber || (d as any).regNumber || '').trim(),
             isMain: !!d.isMain,
-            signatureUrl: isTarget ? localRef : (d.signatureUrl || '')
+            signatureUrl: isTarget ? finalImage : (d.signatureUrl || '')
           };
         });
 
-        // Ensure we don't send base64 data to Firestore
-        const sanitizedDoctors = updatedDoctors.map(d => {
-          const cleanDoc = { ...d };
-          if (cleanDoc.signatureUrl && cleanDoc.signatureUrl.startsWith('data:image')) {
-            const originalDoc = clinic.doctors?.find((orig: any) => orig.id === d.id);
-            if (originalDoc && originalDoc.signatureUrl && originalDoc.signatureUrl.startsWith('local-asset:')) {
-              cleanDoc.signatureUrl = originalDoc.signatureUrl;
-            } else {
-              cleanDoc.signatureUrl = '';
-            }
-          }
-          return cleanDoc;
-        });
-
         await updateDoc(doc(db, 'clinics', clinic.id), {
-          doctors: sanitizedDoctors,
+          doctors: updatedDoctors,
           updatedAt: serverTimestamp()
         });
       } else {
         await updateDoc(doc(db, 'clinics', clinic.id), {
-          [currentField]: localRef,
+          [currentField]: finalImage,
           updatedAt: serverTimestamp()
         });
       }
 
       setCropperOpen(false);
       setLoading(false);
-      toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} saved locally on this device!`, { id: mainToastId });
+      toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} saved and synced!`, { id: mainToastId });
 
       if (refreshLocalAssets) {
         await refreshLocalAssets();
@@ -348,43 +335,32 @@ export default function SettingsPage() {
 
       const mainDoctor = formattedDoctors.find(d => d.isMain) || formattedDoctors[0];
 
-      // Helper to strip base64 data to prevent Firestore size limit errors
-      const sanitizeForFirestore = (data: any) => {
+      // Helper to resolve and sync local assets to Firestore Base64
+      const sanitizeForFirestore = async (data: any) => {
         const sanitized = { ...data };
         
-        // IMPORTANT: Branding assets (logo, stamp, signature) are stored locally.
-        // The Firestore field should only contain a "local-asset:ID" reference.
-        
-        // If the current value in formData is base64 (resolved), 
-        // we should REVERT it to the original local-asset reference from Firestore
-        // to avoid overwriting the cloud reference with an empty string or base64.
-
-        const getOriginalRef = (currentVal: string, field: string) => {
-          if (currentVal?.startsWith('data:image')) {
-            const originalRef = (rawClinic as any)?.[field];
-            if (originalRef?.startsWith('local-asset:')) return originalRef;
-            return ''; // If no original ref, don't save base64
+        // Helper to resolve a "local-asset:ID" to actual Base64 data for cloud sync
+        const resolveToCloud = async (currentVal: string) => {
+          if (currentVal?.startsWith('local-asset:')) {
+            const idbKey = currentVal.replace('local-asset:', '');
+            const base64 = await getLocalAsset(idbKey);
+            if (base64) return base64;
           }
           return currentVal;
         };
 
-        sanitized.logoUrl = getOriginalRef(sanitized.logoUrl, 'logoUrl');
-        sanitized.stampUrl = getOriginalRef(sanitized.stampUrl, 'stampUrl');
+        sanitized.logoUrl = await resolveToCloud(sanitized.logoUrl);
+        sanitized.stampUrl = await resolveToCloud(sanitized.stampUrl);
         
         // Sanitize doctors array
         if (sanitized.doctors) {
-          sanitized.doctors = sanitized.doctors.map((d: any) => {
+          const processedDoctors = [];
+          for (const d of sanitized.doctors) {
             const cleanDoc = { ...d };
-            if (cleanDoc.signatureUrl?.startsWith('data:image')) {
-              const originalDoc = rawClinic?.doctors?.find((orig: any) => orig.id === d.id);
-              if (originalDoc?.signatureUrl?.startsWith('local-asset:')) {
-                cleanDoc.signatureUrl = originalDoc.signatureUrl;
-              } else {
-                cleanDoc.signatureUrl = '';
-              }
-            }
-            return cleanDoc;
-          });
+            cleanDoc.signatureUrl = await resolveToCloud(cleanDoc.signatureUrl);
+            processedDoctors.push(cleanDoc);
+          }
+          sanitized.doctors = processedDoctors;
         }
         
         return sanitized;
@@ -408,7 +384,7 @@ export default function SettingsPage() {
       };
 
       // Apply sanitization to the payload BEFORE the change check and update
-      const firestorePayload = sanitizeForFirestore(finalData);
+      const firestorePayload = await sanitizeForFirestore(finalData);
 
       // Log the exact object being sent to Firestore
       console.log('Sending sanitized clinic data to Firestore:', firestorePayload);
@@ -709,10 +685,10 @@ export default function SettingsPage() {
               
               <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
                 <p className="text-sm text-blue-800">
-                  <strong>Branding & Assets:</strong> Logo, stamp, and signature are stored locally on this device/browser only. If you use another device or browser, upload them again there.
+                  <strong>Branding & Assets:</strong> Your logo, stamp, and signature are now securely synced to the cloud. 
                 </p>
                 <p className="mt-1 text-xs text-blue-600">
-                  Other clinic data (text settings) is securely synced via cloud and available across all your devices.
+                  Patients viewing your bills on WhatsApp or other devices will be able to see your clinic's branding.
                 </p>
               </div>
             </TabsContent>

@@ -13,47 +13,51 @@ const plans = [
     price: '₹299',
     period: '/month',
     tagline: 'Less than a single patient consultation 😉',
-    note: 'Perfect for small clinics',
+    badge: 'Best for Small Clinic',
+    note: 'All Premium features included',
     features: [
       '300 bill generation per month',
-      'Patient management',
-      'Daily revenue reports',
+      'All System Features Unlocked',
+      'Ortho Case Management',
+      'Patient Records & History',
       'Mobile & Desktop access',
       'Secure Cloud storage'
     ],
-    cta: 'Choose Plan',
+    cta: 'Choose Basic',
     highlight: false
   },
   {
-    name: 'PRO PLAN',
+    name: 'PROFESSIONAL',
     price: '₹799',
     period: '/month',
     tagline: 'Less than a full mouth scaling 😄',
-    badge: 'Most Popular',
+    badge: 'Highly Recommended',
     features: [
-      'Unlimited bill generation',
-      'Advanced analytics',
-      'Multiple doctor support',
-      'Priority support',
-      'All Basic features included'
+      'Everything in Basic Plan',
+      'Unlimited Bill Generation',
+      'Full System Support',
+      'Priority Help Desk',
+      'Interactive Analytics',
+      'Early access to new features'
     ],
-    cta: 'Choose Plan',
+    cta: 'Upgrade to Professional',
     highlight: true
   },
   {
-    name: 'PREMIUM PLAN',
+    name: 'INFINITE EDITION',
     price: '₹2999',
-    period: '',
+    period: ' / 3 Years',
     tagline: 'Less than a single RCT price 😎',
-    badge: 'Best Value 🔥',
+    badge: '3 Year Special 🔥',
     features: [
-      'Long-term access',
-      'Unlimited bill generation',
-      'Custom branding',
-      'Full features unlocked',
-      'All Pro features included'
+      'Everything in Professional',
+      '3 Years Unlimited Access',
+      'Infinite Bill Generation',
+      'Priority Help Desk',
+      'Lifetime Data Security',
+      'No Monthly Hassles'
     ],
-    cta: 'Choose Plan',
+    cta: 'Choose Infinite',
     highlight: false
   }
 ];
@@ -80,8 +84,8 @@ export default function PricingPage() {
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">30-Day Free Trial</h2>
               <p className="text-blue-50 text-base sm:text-lg font-medium opacity-90 max-w-xl">
-                Experience full access to all features—unlimited bills, reports, and AI management. 
-                No credit card required. No commitment.
+                Start your software journey with complete access to every feature including unlimited bills and advanced reports. 
+                No credit card is required to begin and you have absolutely zero commitments.
               </p>
             </div>
             <div className="flex flex-col items-center gap-2">

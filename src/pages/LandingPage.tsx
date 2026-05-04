@@ -51,7 +51,6 @@ export default function LandingPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white relative">
-// Global Decorative Background
       <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-[120px] -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-indigo-50/40 rounded-full blur-[120px] translate-y-1/2"></div>
@@ -309,7 +308,7 @@ export default function LandingPage() {
         </section>
 
         {/* Features Grid */}
-        <section id="features" className="relative bg-gray-50/50 py-24 border-y border-gray-100 overflow-hidden">
+        <section id="features" className="relative bg-gray-50/50 py-24 border-y border-gray-100 overflow-hidden scroll-mt-20">
           <div className="absolute top-0 right-0 -z-10 translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-blue-100/30 rounded-full blur-[80px]"></div>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">

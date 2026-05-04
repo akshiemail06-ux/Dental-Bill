@@ -11,53 +11,57 @@ const PricingSection = () => {
       price: "₹299",
       period: "/month",
       limit: "300 Bills per month",
-      humor: "Less than a single patient consultation 😄",
+      humor: "Less than a single patient consultation 😉",
       features: [
-        "Professional Bill Generation",
+        "All Premium Features",
+        "300 Professional Bills/month",
         "Ortho Case Management",
-        "Revenue Analytics",
-        "Clinic Branding",
-        "Reports & History",
+        "Full Revenue Analytics",
+        "Custom Clinic Branding",
+        "Patient History & Records"
       ],
-      cta: "Login Now to Explore",
+      cta: "Get Started Now",
       color: "blue",
-      highlight: false
+      highlight: false,
+      badge: "Best for Small Clinic"
     },
     {
-      name: "Pro",
+      name: "Professional",
       price: "₹799",
       period: "/month",
       limit: "Unlimited bill generation",
       humor: "Less than a full mouth scaling 😄",
       features: [
-        "Unlimited everything",
-        "Priority Support",
-        "All features included",
-        "Advanced Analytics",
-        "Team Management",
+        "Everything in Basic Plan",
+        "Unlimited Bill Generation",
+        "Priority Support Team",
+        "Interactive Dashboards",
+        "Advanced Patient Insights",
+        "Early access to new features"
       ],
-      cta: "Login Now to Explore",
+      cta: "Upgrade to Professional",
       color: "blue",
       highlight: true,
-      badge: "Best Value"
+      badge: "Market Choice"
     },
     {
-      name: "Growth Offer",
+      name: "Infinite Edition",
       price: "₹2999",
       period: " (3 Years Access)",
-      limit: "Unlimited access for 3 years",
-      humor: "Less than a single RCT 😄",
+      limit: "Complete peace of mind",
+      humor: "Less than a single RCT price 😎",
       features: [
-        "Unlimited bill generation",
-        "3 Years of data safety",
-        "Priority Onboarding",
-        "Limited Time Offer",
-        "Free Feature Updates",
+        "3 Full Years of Access",
+        "Everything in Professional",
+        "Infinite Bill Generation",
+        "Full System Support",
+        "Early Feature Access",
+        "Data Safety & Security"
       ],
-      cta: "Login Now to Explore",
+      cta: "Grab Special Offer",
       color: "purple",
       highlight: false,
-      badge: "Limited Time"
+      badge: "Best Value"
     }
   ];
 
@@ -102,9 +106,9 @@ const PricingSection = () => {
               </div>
               <div className="text-center sm:text-left">
                 <p className="text-sm font-bold text-gray-900">
-                  🎉 30 Days Free Trial — Unlimited Access
+                  🎉 30 Days Free Trial with Unlimited Access
                 </p>
-                <p className="text-xs text-gray-500 font-medium">New users get full access to all features. No limits. No commitment.</p>
+                <p className="text-xs text-gray-500 font-medium">New users get complete access to every single feature without any limits or commitments.</p>
               </div>
             </div>
           </motion.div>

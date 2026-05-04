@@ -276,10 +276,15 @@ export default function CreateBillPage() {
 
     if (isDemo) {
       const selectedDoctor = clinic?.doctors?.find(d => d.id === selectedDoctorId);
-      const billData = {
-        id: 'demo-new-bill',
-        clinicId: 'demo-clinic',
-        patientName: patientInfo.name.trim(),
+        const billData = {
+          id: 'demo-new-bill',
+          clinicId: 'demo-clinic',
+          clinicName: clinic?.name || 'Smile Dental Care',
+          clinicAddress: clinic?.address || '123, Health Enclave, Sector 15, New Delhi',
+          clinicPhone: clinic?.phone || '9876543210',
+          clinicEmail: clinic?.email || 'contact@smiledental.com',
+          clinicGst: clinic?.gstNumber || '',
+          patientName: patientInfo.name.trim(),
         patientPhone: patientInfo.phone.trim(),
         billDate: new Date(patientInfo.date),
         billNumber,
@@ -351,6 +356,11 @@ export default function CreateBillPage() {
   
         const billData: any = {
           clinicId: clinic.id,
+          clinicName: clinic.name || '',
+          clinicAddress: clinic.address || '',
+          clinicPhone: clinic.phone || '',
+          clinicEmail: clinic.email || '',
+          clinicGst: clinic.gstNumber || '',
           ownerId: clinic.ownerId || user?.uid || '', // Explicitly add ownerId for security rules
           patientName: patientInfo.name.trim(),
           patientPhone: (patientInfo.phone || '').trim(),

@@ -164,7 +164,7 @@ const SEOLandingIndiaPage: React.FC = () => {
             </div>
 
             {/* Features Spotlight */}
-            <div className="my-16 bg-blue-600 rounded-3xl p-8 sm:p-12 text-white">
+            <div id="features" className="my-16 bg-blue-600 rounded-3xl p-8 sm:p-12 text-white scroll-mt-20">
               <h2 className="text-3xl font-bold text-white mb-8 mt-0">Powerful Features for Indian Dentists</h2>
               <div className="grid sm:grid-cols-2 gap-8">
                 <div className="space-y-2">

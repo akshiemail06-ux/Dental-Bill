@@ -63,6 +63,11 @@ export interface BillItem {
 export interface Bill {
   id: string;
   clinicId: string;
+  clinicName?: string;
+  clinicAddress?: string;
+  clinicPhone?: string;
+  clinicEmail?: string;
+  clinicGst?: string;
   patientName: string;
   patientPhone?: string;
   billDate: Timestamp | Date;
