@@ -20,11 +20,11 @@ const IdBLogoIcon = ({ size = 24, className = "" }: { size?: number, className?:
   >
     <text 
       x="50%" 
-      y="55%" 
+      y="58%" 
       dominantBaseline="middle" 
       textAnchor="middle" 
       fill="currentColor" 
-      style={{ fontFamily: 'sans-serif', fontWeight: 900, fontSize: '200px', letterSpacing: '-12px' }}
+      style={{ fontFamily: 'sans-serif', fontWeight: 900, fontSize: '260px', letterSpacing: '-14px' }}
     >
       IdB
     </text>

@@ -9,13 +9,13 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/logo.svg?v=20",
+      "src": "/logo.svg?v=21",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/logo.svg?v=20",
+      "src": "/logo.svg?v=21",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
