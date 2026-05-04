@@ -62,14 +62,14 @@ export default function LandingPage() {
         <meta property="og:url" content="https://instantdentalbill.in" />
         <meta property="og:title" content="Best Dental Billing Software in India | Instant Dental Bill" />
         <meta property="og:description" content="Instant Dental Bill is the best dental billing software in India. Modernize your practice with smart billing and easy patient management." />
-        <meta property="og:image" content="https://instantdentalbill.in/logo.svg" />
+        <meta property="og:image" content="https://instantdentalbill.in/logo.svg?v=6" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://instantdentalbill.in" />
         <meta property="twitter:title" content="Best Dental Billing Software in India | Instant Dental Bill" />
         <meta property="twitter:description" content="Instant Dental Bill is the best dental billing software in India. Modernize your practice with smart billing and easy patient management." />
-        <meta property="twitter:image" content="https://instantdentalbill.in/logo.svg" />
+        <meta property="twitter:image" content="https://instantdentalbill.in/logo.svg?v=6" />
 
         <link rel="canonical" href="https://instantdentalbill.in" />
       </Helmet>
