@@ -27,7 +27,7 @@
     <meta name="theme-color" content="#2563eb" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="manifest" href="/manifest.json?v=14" />
+    <link rel="manifest" href="/manifest.json?v=18" />
     
     <!-- Prefetch/Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,8 +35,8 @@
     <link rel="preconnect" href="https://firestore.googleapis.com" />
 
     <!-- Logo & Favicons -->
-    <link rel="apple-touch-icon" href="/logo.svg" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="apple-touch-icon" href="/logo.svg?v=5" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg?v=5" />
     <style>
       #pwa-loader {
         position: fixed;
@@ -57,20 +57,18 @@
         visibility: hidden;
       }
       .loader-container {
-        width: 100px;
-        height: 100px;
-        background: white;
-        border-radius: 50%;
+        width: 120px;
+        height: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         animation: pulse 2s infinite ease-in-out;
       }
       .loader-icon {
-        width: 60px;
-        height: 60px;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
       }
       .loader-text {
         color: white;
@@ -90,7 +88,7 @@
     <div id="pwa-loader">
       <div class="loader-container">
         <img 
-          src="/logo.svg" 
+          src="/logo.svg?v=5" 
           alt="Dental Logo" 
           class="loader-icon"
         />

@@ -13,28 +13,18 @@ const IdBLogoIcon = ({ size = 24, className = "" }: { size?: number, className?:
   <svg 
     width={size} 
     height={size} 
-    viewBox="0 0 24 24" 
+    viewBox="0 0 512 512" 
     fill="none" 
     xmlns="http://www.w3.org/2000/svg"
     className={className}
   >
-    {/* Small Tooth Accent */}
-    <path 
-      d="M17 4.5C17 3.5 16.2 3 15.5 3C14.8 3 14.5 3.5 14.5 4.5C14.5 5.5 15 6.5 15 8C15 9.5 14.5 10.5 14.5 11C14.5 11.5 15 11.5 15.5 11.5C16 11.5 17 11.5 17.5 10.5C18 9.5 18 8 18 6.5C18 5 17 4.5 17 4.5Z" 
-      fill="currentColor"
-      className="opacity-90"
-    />
-    {/* IdB Text */}
     <text 
-      x="2" 
-      y="18" 
+      x="50%" 
+      y="55%" 
+      dominantBaseline="middle" 
+      textAnchor="middle" 
       fill="currentColor" 
-      style={{ 
-        fontFamily: 'system-ui, sans-serif', 
-        fontWeight: '900', 
-        fontSize: '14px',
-        letterSpacing: '-1px'
-      }}
+      style={{ fontFamily: 'sans-serif', fontWeight: 900, fontSize: '200px', letterSpacing: '-12px' }}
     >
       IdB
     </text>

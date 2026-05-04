@@ -1,10 +1,10 @@
-const CACHE_NAME = 'dental-bill-v14';
+const CACHE_NAME = 'dental-bill-v18';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/manifest.json?v=14',
-  '/logo.svg'
+  '/manifest.json?v=18',
+  '/logo.svg?v=5'
 ];
 
 self.addEventListener('install', (event) => {
