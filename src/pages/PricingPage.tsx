@@ -4,7 +4,7 @@ import { Check, Info, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import AppLayout from '../components/AppLayout';
 
 const plans = [
@@ -78,8 +78,8 @@ export default function PricingPage() {
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold mb-3 border border-white/30">
                 <Sparkles size={14} className="text-yellow-300" /> SPECIAL OFFER
               </div>
-              <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-2">30-Day Free Trial</h2>
-              <p className="text-blue-50 text-lg font-medium opacity-90 max-w-xl">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">30-Day Free Trial</h2>
+              <p className="text-blue-50 text-base sm:text-lg font-medium opacity-90 max-w-xl">
                 Experience full access to all features—unlimited bills, reports, and AI management. 
                 No credit card required. No commitment.
               </p>
@@ -109,7 +109,7 @@ export default function PricingPage() {
           </motion.p>
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-3 pt-8">
+        <div className="grid gap-12 lg:grid-cols-3 pt-12">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.name}
@@ -117,10 +117,10 @@ export default function PricingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className={`relative h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-2 ${plan.highlight ? 'border-blue-600 ring-4 ring-blue-50' : 'border-gray-100'}`}>
+              <Card className={`relative h-full flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-2 overflow-visible ${plan.highlight ? 'border-blue-600 ring-4 ring-blue-50' : 'border-gray-100'}`}>
                 {plan.badge && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                    <Badge className="bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-bold border-none shadow-lg">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                    <Badge className="bg-blue-600 text-white px-5 py-1.5 h-auto min-w-[120px] justify-center rounded-full text-xs font-bold border-none shadow-lg whitespace-nowrap leading-none">
                       {plan.badge}
                     </Badge>
                   </div>

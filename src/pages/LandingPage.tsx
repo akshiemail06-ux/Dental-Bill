@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { Button } from '@/components/ui/button';
 import { 
   FileText, 
@@ -52,29 +51,7 @@ export default function LandingPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white relative">
-      <Helmet>
-        <title>Best Dental Billing Software in India | Instant Dental Bill</title>
-        <meta name="description" content="Instant Dental Bill is the best dental billing software in India for modern dental clinics. Manage patient invoices, medical records, and clinic attendance with zero effort. Get a free demo today!" />
-        <meta name="keywords" content="Best Dental Billing Software in India, best dental ERP India, dental clinic management software, dental billing app India" />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://instantdentalbill.in" />
-        <meta property="og:title" content="Best Dental Billing Software in India | Instant Dental Bill" />
-        <meta property="og:description" content="Instant Dental Bill is the best dental billing software in India. Modernize your practice with smart billing and easy patient management." />
-        <meta property="og:image" content="https://instantdentalbill.in/logo.svg?v=21" />
-
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://instantdentalbill.in" />
-        <meta property="twitter:title" content="Best Dental Billing Software in India | Instant Dental Bill" />
-        <meta property="twitter:description" content="Instant Dental Bill is the best dental billing software in India. Modernize your practice with smart billing and easy patient management." />
-        <meta property="twitter:image" content="https://instantdentalbill.in/logo.svg?v=21" />
-
-        <link rel="canonical" href="https://instantdentalbill.in" />
-      </Helmet>
-
-      {/* Global Decorative Background */}
+// Global Decorative Background
       <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-[120px] -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-indigo-50/40 rounded-full blur-[120px] translate-y-1/2"></div>

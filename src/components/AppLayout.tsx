@@ -211,45 +211,47 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <Link to="/disclaimer" className="hover:text-blue-600 transition-colors">Disclaimer</Link>
           </div>
         </footer>
-      </main>
 
+        {/* Floating Action Button (FAB) */}
+        {!location.pathname.startsWith('/bills/') && !location.pathname.startsWith('/ortho/') && (
+          <div className="fixed bottom-8 right-6 z-[9999] print:hidden">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="icon" className="h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all hover:scale-110 active:scale-95 group text-white border-2 border-white/20">
+                  <Plus className="h-6 w-6 group-data-[state=open]:rotate-45 transition-transform duration-200" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" side="top" className="w-56 mb-4 rounded-2xl p-2 bg-white/95 backdrop-blur-sm border-blue-50 shadow-2xl z-[10000]">
+                <DropdownMenuItem 
+                  onClick={() => navigate('/bills/new')}
+                  className="flex items-center gap-3 rounded-xl px-3 py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-50 text-gray-700 transition-colors"
+                >
+                  <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                    <FilePlus size={20} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-sm">New Bill</span>
+                    <span className="text-[10px] text-gray-400">Regular patient billing</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => navigate('/ortho?new=true')}
+                  className="flex items-center gap-3 rounded-xl px-3 py-3 cursor-pointer hover:bg-purple-50 focus:bg-purple-50 text-gray-700 transition-colors"
+                >
+                  <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+                    <UserPlus size={20} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-bold text-sm">Ortho Patient</span>
+                    <span className="text-[10px] text-gray-400">Add braces case patient</span>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        )}
+      </main>
     </div>
-    {/* Floating Action Button (FAB) */}
-    {!location.pathname.startsWith('/bills/') && !location.pathname.startsWith('/ortho/') && (
-        <div className="fixed bottom-8 right-6 z-[9999] print:hidden">
-          <DropdownMenu>
-            <DropdownMenuTrigger className={cn(buttonVariants({ size: 'icon' }), "h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all hover:scale-110 active:scale-95 group text-white border-2 border-white/20")}>
-              <Plus className="h-6 w-6 group-data-[state=open]:rotate-45 transition-transform duration-200" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" side="top" className="w-56 mb-4 rounded-2xl p-2 bg-white/95 backdrop-blur-sm border-blue-50 shadow-2xl z-[10000]">
-              <DropdownMenuItem 
-                onClick={() => navigate('/bills/new')}
-                className="flex items-center gap-3 rounded-xl px-3 py-3 cursor-pointer hover:bg-blue-50 focus:bg-blue-50 text-gray-700 transition-colors"
-              >
-                <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  <FilePlus size={20} />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-bold text-sm">New Bill</span>
-                  <span className="text-[10px] text-gray-400">Regular patient billing</span>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                onClick={() => navigate('/ortho?new=true')}
-                className="flex items-center gap-3 rounded-xl px-3 py-3 cursor-pointer hover:bg-purple-50 focus:bg-purple-50 text-gray-700 transition-colors"
-              >
-                <div className="h-10 w-10 flex items-center justify-center rounded-xl bg-purple-50 text-purple-600">
-                  <UserPlus size={20} />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-bold text-sm">Ortho Patient</span>
-                  <span className="text-[10px] text-gray-400">Add braces case patient</span>
-                </div>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )}
   </div>
   );
 }

@@ -5,7 +5,6 @@
 
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ClinicProvider, useClinic } from './contexts/ClinicContext';
 import { SubscriptionProvider } from './contexts/SubscriptionContext';
@@ -118,10 +117,9 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <HelmetProvider>
-        <Router>
-          <AuthProvider>
-            <SubscriptionProvider>
+      <Router>
+        <AuthProvider>
+          <SubscriptionProvider>
               <ClinicProvider>
                 <PWAProvider>
                   <Suspense fallback={<LoadingFallback />}>
@@ -227,8 +225,7 @@ export default function App() {
         </SubscriptionProvider>
       </AuthProvider>
       </Router>
-    </HelmetProvider>
-  </ErrorBoundary>
+    </ErrorBoundary>
   );
 }
 

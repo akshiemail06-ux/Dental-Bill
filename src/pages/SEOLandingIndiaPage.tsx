@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import { motion } from 'motion/react';
 import { 
   CheckCircle2, 
@@ -32,50 +31,6 @@ const SEOLandingIndiaPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans selection:bg-blue-100 selection:text-blue-900">
-      <Helmet>
-        <title>Best Dental Clinic Software in India | Instant Dental Bill</title>
-        <meta 
-          name="description" 
-          content="Manage your dental clinic with ease. Create invoices, track revenue, and manage patients using the best dental clinic software in India." 
-        />
-        <link rel="canonical" href="https://instantdentalbill.in/dental-clinic-software-india" />
-        
-        {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://instantdentalbill.in/dental-clinic-software-india" />
-        <meta property="og:title" content="Best Dental Clinic Software in India | Instant Dental Bill" />
-        <meta property="og:description" content="The most comprehensive dental clinic management & billing software designed specifically for Indian practitioners. Start your free trial today." />
-        <meta property="og:image" content="https://instantdentalbill.in/og-india.png" />
-
-        {/* Twitter */}
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://instantdentalbill.in/dental-clinic-software-india" />
-        <meta property="twitter:title" content="Best Dental Clinic Software in India | Instant Dental Bill" />
-        <meta property="twitter:description" content="Manage your clinic efficiently with GST-ready billing and patient management. Built for Indian dentists." />
-        <meta property="twitter:image" content="https://instantdentalbill.in/og-india.png" />
-
-        {/* Structured Data (Schema.org) */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "Instant Dental Bill",
-            "operatingSystem": "Web, Android, iOS",
-            "applicationCategory": "HealthApplication",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "INR"
-            },
-            "aggregateRating": {
-              "@type": "AggregateRating",
-              "ratingValue": "4.9",
-              "ratingCount": "120"
-            }
-          })}
-        </script>
-      </Helmet>
-
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
