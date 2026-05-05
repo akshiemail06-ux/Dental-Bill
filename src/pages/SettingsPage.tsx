@@ -429,7 +429,7 @@ export default function SettingsPage() {
     <AppLayout>
       <div className="flex flex-col max-w-5xl mx-auto px-4 py-4 md:py-6">
         {/* Header Section - Compact */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 text-blue-600 rounded-xl">
               <ShieldCheck size={20} />
@@ -448,30 +448,30 @@ export default function SettingsPage() {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
           {/* Unified Professional Wizard Steps */}
-          <div className="relative mb-6">
-            <TabsList className="grid w-full grid-cols-3 h-14 bg-slate-100/80 p-1.5 rounded-xl border border-slate-200/50 shadow-sm">
+          <div className="relative mb-6 -mx-4 px-4 overflow-hidden">
+            <TabsList className="flex md:grid md:grid-cols-3 w-full h-14 bg-slate-100/80 p-1.5 rounded-xl border border-slate-200/50 shadow-sm overflow-x-auto no-scrollbar scroll-smooth">
               <TabsTrigger 
                 value="profile" 
-                className="flex items-center justify-center gap-2 rounded-lg transition-all data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-blue-600 group"
+                className="flex-shrink-0 md:flex-shrink-1 px-4 md:px-2 flex items-center justify-center gap-2 rounded-lg transition-all data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-blue-600 group whitespace-nowrap"
               >
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 group-data-[state=active]:bg-blue-600 group-data-[state=active]:text-white text-[10px] font-black transition-colors">1</div>
-                <span className="font-bold text-[11px] uppercase tracking-wider text-slate-500 group-data-[state=active]:text-blue-700">Clinic Profile</span>
+                <div className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-slate-200 group-data-[state=active]:bg-blue-600 group-data-[state=active]:text-white text-[10px] font-black transition-colors">1</div>
+                <span className="font-bold text-[10px] md:text-[11px] uppercase tracking-wider text-slate-500 group-data-[state=active]:text-blue-700">Clinic Profile</span>
               </TabsTrigger>
               
               <TabsTrigger 
                 value="doctors" 
-                className="flex items-center justify-center gap-2 rounded-lg transition-all data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-blue-600 group"
+                className="flex-shrink-0 md:flex-shrink-1 px-4 md:px-2 flex items-center justify-center gap-2 rounded-lg transition-all data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-blue-600 group whitespace-nowrap"
               >
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 group-data-[state=active]:bg-blue-600 group-data-[state=active]:text-white text-[10px] font-black transition-colors">2</div>
-                <span className="font-bold text-[11px] uppercase tracking-wider text-slate-500 group-data-[state=active]:text-blue-700">Manage Doctors</span>
+                <div className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-slate-200 group-data-[state=active]:bg-blue-600 group-data-[state=active]:text-white text-[10px] font-black transition-colors">2</div>
+                <span className="font-bold text-[10px] md:text-[11px] uppercase tracking-wider text-slate-500 group-data-[state=active]:text-blue-700">Manage Doctors</span>
               </TabsTrigger>
-
+ 
               <TabsTrigger 
                 value="branding" 
-                className="flex items-center justify-center gap-2 rounded-lg transition-all data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-blue-600 group"
+                className="flex-shrink-0 md:flex-shrink-1 px-4 md:px-2 flex items-center justify-center gap-2 rounded-lg transition-all data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-blue-600 group whitespace-nowrap"
               >
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-200 group-data-[state=active]:bg-blue-600 group-data-[state=active]:text-white text-[10px] font-black transition-colors">3</div>
-                <span className="font-bold text-[11px] uppercase tracking-wider text-slate-500 group-data-[state=active]:text-blue-700">Branding</span>
+                <div className="flex h-5 w-5 md:h-6 md:w-6 items-center justify-center rounded-full bg-slate-200 group-data-[state=active]:bg-blue-600 group-data-[state=active]:text-white text-[10px] font-black transition-colors">3</div>
+                <span className="font-bold text-[10px] md:text-[11px] uppercase tracking-wider text-slate-500 group-data-[state=active]:text-blue-700">Branding</span>
               </TabsTrigger>
             </TabsList>
           </div>
@@ -488,7 +488,7 @@ export default function SettingsPage() {
                     transition={{ duration: 0.15 }}
                   >
                     <Card className="border-none shadow-xl shadow-slate-200/50 ring-1 ring-slate-200 overflow-hidden rounded-2xl">
-                      <CardHeader className="bg-white border-b border-slate-50 py-5 px-8">
+                      <CardHeader className="bg-white border-b border-slate-50 py-5 px-6 md:px-8">
                         <div className="flex items-center gap-3">
                           <Building2 className="text-blue-600" size={22} />
                           <div>
@@ -497,7 +497,7 @@ export default function SettingsPage() {
                           </div>
                         </div>
                       </CardHeader>
-                      <CardContent className="p-8 bg-white">
+                      <CardContent className="p-6 md:p-8 bg-white">
                         <div className="grid gap-6 md:grid-cols-2">
                           <div className="space-y-1.5">
                             <Label htmlFor="name" className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Clinic Name</Label>
@@ -543,15 +543,15 @@ export default function SettingsPage() {
                     transition={{ duration: 0.15 }}
                   >
                     <Card className="border-none shadow-xl shadow-slate-200/50 ring-1 ring-slate-200 overflow-hidden rounded-2xl">
-                      <CardHeader className="bg-white border-b border-slate-50 py-5 px-8 flex flex-row items-center justify-between">
-                        <div className="flex items-center gap-3">
+                      <CardHeader className="bg-white border-b border-slate-50 py-5 px-6 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center gap-3 w-full md:w-auto">
                           <Stethoscope className="text-blue-600" size={22} />
                           <div>
                             <CardTitle className="text-xl font-bold text-slate-900">Medical Professionals</CardTitle>
                             <p className="text-slate-500 text-[11px] uppercase font-bold tracking-tighter">Add doctors and orthodontists at your clinic</p>
                           </div>
                         </div>
-                        <Button type="button" variant="outline" size="sm" onClick={handleAddDoctor} disabled={isDemo} className="h-10 px-5 rounded-xl text-blue-600 border-blue-100 hover:bg-blue-50 font-black uppercase tracking-tighter text-[10px]">
+                        <Button type="button" variant="outline" size="sm" onClick={handleAddDoctor} disabled={isDemo} className="w-full md:w-auto h-10 px-5 rounded-xl text-blue-600 border-blue-100 hover:bg-blue-50 font-black uppercase tracking-tighter text-[10px]">
                           <Plus className="mr-1.5 h-4 w-4" /> Add Doctor
                         </Button>
                       </CardHeader>
@@ -591,7 +591,7 @@ export default function SettingsPage() {
                                   </div>
                                 </div>
                               </div>
-                              <div className="flex flex-col items-center justify-center border-l border-slate-100 pl-8 md:w-40 min-h-[100px]">
+                              <div className="flex flex-col items-center justify-center md:border-l border-slate-100 md:pl-8 md:w-40 min-h-[100px]">
                                 <Label className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Digital Signature</Label>
                                 {doc.signatureUrl ? (
                                   <div className="relative group/sig">
@@ -613,11 +613,11 @@ export default function SettingsPage() {
                           </div>
                         ))}
                       </CardContent>
-                      <CardFooter className="bg-slate-50 px-8 py-5 flex justify-between items-center border-t border-slate-100">
+                      <CardFooter className="bg-slate-50 px-6 md:px-8 py-5 flex flex-col md:flex-row gap-4 md:justify-between items-center border-t border-slate-100">
                          <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Profile Readiness: 66%</span>
-                         <div className="flex gap-3">
-                           <Button type="button" variant="ghost" onClick={() => setActiveTab('profile')} className="h-11 px-6 text-xs font-bold text-slate-400 hover:text-slate-600">Previous</Button>
-                           <Button type="submit" className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 font-black h-11 px-8 rounded-xl active:scale-95 transition-all" disabled={loading || isDemo}>
+                         <div className="flex w-full md:w-auto gap-3">
+                           <Button type="button" variant="ghost" onClick={() => setActiveTab('profile')} className="flex-1 md:flex-none h-11 px-6 text-xs font-bold text-slate-400 hover:text-slate-600">Previous</Button>
+                           <Button type="submit" className="flex-1 md:flex-none bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 font-black h-11 px-8 rounded-xl active:scale-95 transition-all" disabled={loading || isDemo}>
                              Save & Continue
                            </Button>
                          </div>
@@ -704,11 +704,11 @@ export default function SettingsPage() {
                            </div>
                         </div>
                       </CardContent>
-                      <CardFooter className="bg-slate-50 px-8 py-5 flex justify-between items-center border-t border-slate-100">
+                      <CardFooter className="bg-slate-50 px-6 md:px-8 py-5 flex flex-col md:flex-row gap-4 md:justify-between items-center border-t border-slate-100">
                          <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">Setup Status: Ready</span>
-                         <div className="flex gap-3">
-                            <button type="button" onClick={() => setActiveTab('doctors')} className="h-11 px-6 text-xs font-bold text-slate-400 hover:text-slate-600">Previous</button>
-                            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-200 font-black h-12 px-10 rounded-xl active:scale-95 transition-all" disabled={loading || isDemo}>
+                         <div className="flex w-full md:w-auto gap-3">
+                            <button type="button" onClick={() => setActiveTab('doctors')} className="flex-1 md:flex-none h-11 px-6 text-xs font-bold text-slate-400 hover:text-slate-600">Previous</button>
+                            <Button type="submit" className="flex-1 md:flex-none bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-200 font-black h-12 px-10 rounded-xl active:scale-95 transition-all" disabled={loading || isDemo}>
                               {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Save className="mr-2 h-5 w-5" />}
                               Complete Profile
                             </Button>
