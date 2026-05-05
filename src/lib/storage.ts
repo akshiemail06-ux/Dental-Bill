@@ -37,19 +37,13 @@ export const uploadClinicAsset = async (
 };
 
 /**
- * Handles deletion of local assets from IndexedDB correctly.
- * Can take either a URL (if it's local-asset:) or direct parameters to construct the key.
+ * Handles deletion of local assets
  */
-export const deleteClinicAsset = async (
-  clinicId: string, 
-  assetType: 'logo' | 'stamp' | 'signature',
-  doctorId: string | null = null
-): Promise<void> => {
+export const deleteClinicAsset = async (url: string): Promise<void> => {
+  if (!url || !url.startsWith('local-asset:')) return;
+  
   try {
-    const key = doctorId 
-      ? `clinic-asset:${clinicId}:signature:${doctorId}`
-      : `clinic-asset:${clinicId}:${assetType}`;
-    
+    const key = url.replace('local-asset:', '');
     console.log(`Deleting local asset: ${key}`);
     await deleteLocalAsset(key);
   } catch (error) {

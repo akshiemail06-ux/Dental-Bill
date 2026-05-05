@@ -627,7 +627,7 @@ ${billLink}`;
                   <h3 className="text-[8px] font-black text-blue-900 uppercase tracking-[0.4em]">Treatment Done By</h3>
                     <div className="flex flex-col items-end space-y-1">
                       <p className="text-lg font-semibold text-slate-900 uppercase tracking-tight leading-none">
-                        {drName.toUpperCase().startsWith('DR') ? drName : `Dr. ${drName}`}
+                        {drName.toLowerCase().startsWith('dr') ? drName : `Dr. ${drName}`}
                       </p>
                       {(drQual || drReg) && (
                         <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest leading-none">
@@ -749,7 +749,7 @@ ${billLink}`;
                     </div>
                     <div className="w-full border-t border-slate-900/60 pt-2 text-right space-y-0.5 px-1">
                       <p className="text-[11px] font-bold text-slate-800 uppercase tracking-tight leading-none">
-                        {drName.toUpperCase().startsWith('DR') ? drName : `Dr. ${drName}`}
+                        {drName.toLowerCase().startsWith('dr') ? drName : `Dr. ${drName}`}
                       </p>
                       <div className="space-y-0.5">
                         {(drQual || drReg) && (

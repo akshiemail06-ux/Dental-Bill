@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { initializeFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 // @ts-ignore
 import firebaseConfig from '../../firebase-applet-config.json';
 
@@ -9,9 +10,10 @@ const app = initializeApp(firebaseConfig);
 // Use initializeFirestore with experimentalForceLongPolling for better stability in some network environments (like proxies/iframes)
 export const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
-}, firebaseConfig.firestoreDatabaseId === '(default)' ? undefined : firebaseConfig.firestoreDatabaseId);
+}, firebaseConfig.firestoreDatabaseId);
 
 export const auth = getAuth(app);
+export const storage = getStorage(app);
 
 // Enable offline persistence for Firestore
 if (typeof window !== 'undefined') {

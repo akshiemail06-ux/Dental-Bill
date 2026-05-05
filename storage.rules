@@ -1,0 +1,15 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{string bucket}/o {
+    match /clinics/{clinicId}/{allPaths=**} {
+      // Allow read access to anyone (public clinic assets like logo/stamp/sig on bills)
+      allow read: if true;
+      
+      // Allow write access only to authenticated users who own the clinic
+      // We can't easily check Firestore from Storage rules without a custom setup,
+      // so we'll check if the user is authenticated for now.
+      // A better way is to include the userId in the path clinics/{userId}/{clinicId}/...
+      allow write: if request.auth != null;
+    }
+  }
+}

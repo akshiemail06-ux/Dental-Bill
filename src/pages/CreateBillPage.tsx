@@ -483,9 +483,7 @@ export default function CreateBillPage() {
                   <Label>Payment Method</Label>
                   <Select value={paymentMethodForUpdate} onValueChange={setPaymentMethodForUpdate}>
                     <SelectTrigger className="h-12 rounded-xl">
-                      <SelectValue placeholder="Select Method">
-                        {paymentMethodForUpdate}
-                      </SelectValue>
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Cash">Cash</SelectItem>
@@ -753,36 +751,16 @@ export default function CreateBillPage() {
 
             <Card className="border-none shadow-sm">
               <CardHeader>
-                <CardTitle className="text-lg font-semibold">Doctor & Notes</CardTitle>
+                <CardTitle className="text-lg font-semibold">Additional Notes</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Issuing Doctor</Label>
-                  <Select value={selectedDoctorId} onValueChange={setSelectedDoctorId}>
-                    <SelectTrigger className="h-11 rounded-xl">
-                      <SelectValue placeholder="Select Doctor">
-                        {clinic?.doctors?.find(d => d.id === selectedDoctorId)?.name || 'Select Doctor'}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {clinic?.doctors?.map(doc => (
-                        <SelectItem key={doc.id} value={doc.id || ''}>
-                          {doc.name} {doc.isMain ? '(Main)' : ''}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2 pt-2">
-                  <Label>Additional Notes</Label>
-                  <textarea 
-                    className="w-full rounded-xl border border-gray-200 p-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                    rows={3}
-                    placeholder="Any special instructions or follow-up notes..."
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                  />
-                </div>
+              <CardContent>
+                <textarea 
+                  className="w-full rounded-xl border border-gray-200 p-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  rows={3}
+                  placeholder="Any special instructions or follow-up notes..."
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
               </CardContent>
             </Card>
           </div>
@@ -878,12 +856,7 @@ export default function CreateBillPage() {
                   <Label>Payment Status</Label>
                   <Select value={paymentStatus} onValueChange={(val: any) => setPaymentStatus(val)}>
                     <SelectTrigger className="h-11 rounded-xl">
-                      <SelectValue placeholder="Select Status">
-                        {paymentStatus === 'paid' ? 'Paid' : 
-                         paymentStatus === 'unpaid' ? 'Unpaid' : 
-                         paymentStatus === 'partial' ? 'Partial Payment' : 
-                         paymentStatus === 'draft' ? 'Draft' : 'Select Status'}
-                      </SelectValue>
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="paid">Paid</SelectItem>
@@ -913,9 +886,7 @@ export default function CreateBillPage() {
                   <Label>Payment Method</Label>
                   <Select value={paymentMethod} onValueChange={setPaymentMethod}>
                     <SelectTrigger className="h-11 rounded-xl">
-                      <SelectValue placeholder="Select Method">
-                        {paymentMethod}
-                      </SelectValue>
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Cash">Cash</SelectItem>

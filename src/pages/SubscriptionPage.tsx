@@ -25,9 +25,9 @@ export default function SubscriptionPage() {
   const getPlanName = (type: string) => {
     switch (type) {
       case 'trial': return 'Free Trial';
-      case 'basic': return 'Basic Plan (₹299)';
+      case 'basic': return 'Starter Plan (₹299)';
       case 'pro': return 'Professional Plan';
-      case 'premium': return 'Infinite Edition';
+      case 'premium': return 'Elite Plan';
       default: return 'Free Plan';
     }
   };
@@ -103,25 +103,20 @@ export default function SubscriptionPage() {
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-50">
               <div className="space-y-1">
                 <p className="text-xs text-gray-500 flex items-center gap-1">
-                   <Calendar size={12} />
-                   {subscription?.planType === 'trial' ? 'Trial Ends On' : 'Valid Until'}
+                  <Calendar size={12} />
+                  {subscription?.planType === 'trial' ? 'Trial Ends On' : 'Subscription Status'}
                 </p>
                 <p className="text-sm font-bold text-gray-900">
-                  {expiryDate ? format(expiryDate, 'do MMMM, yyyy') : 'Active permanent'}
+                  {expiryDate ? format(expiryDate, 'dd MMM, yyyy') : 'Active'}
                 </p>
               </div>
               <div className="space-y-1">
                 <p className="text-xs text-gray-500 flex items-center gap-1">
                   <BarChart3 size={12} />
-                  Time Remaining
+                  Days Remaining
                 </p>
                 <p className={`text-sm font-bold ${daysLeft < 5 ? 'text-red-600' : 'text-gray-900'}`}>
-                  {subscription?.planType === 'premium' 
-                    ? (daysLeft >= 365 
-                        ? `${Math.floor(daysLeft / 365)} Year(s) and ${daysLeft % 365} Days` 
-                        : `${daysLeft} Days`)
-                    : `${daysLeft} Days`
-                  }
+                  {daysLeft} Days
                 </p>
               </div>
             </div>
@@ -166,24 +161,10 @@ export default function SubscriptionPage() {
         <div className="bg-amber-50 border border-amber-100 p-4 rounded-lg flex items-start gap-3">
           <AlertCircle className="text-amber-500 flex-shrink-0" size={20} />
           <div>
-            <h4 className="text-sm font-bold text-amber-900 uppercase">Trial Period Active</h4>
+            <h4 className="text-sm font-bold text-amber-900">Trial Period Active</h4>
             <p className="text-sm text-amber-800 opacity-80 mt-1">
               You are currently using the 30-day free trial. You have {daysLeft} days left to explore all premium features. 
               Upgrade now to avoid any interruption in service.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Subscription Active Alert */}
-      {subscription?.planType !== 'trial' && !isTrialExpired && (
-        <div className="bg-green-50 border border-green-100 p-4 rounded-lg flex items-start gap-3">
-          <CheckCircle2 className="text-green-500 flex-shrink-0" size={20} />
-          <div>
-            <h4 className="text-sm font-bold text-green-900 uppercase">Subscription Active</h4>
-            <p className="text-sm text-green-800 opacity-80 mt-1 font-medium">
-              Your {getPlanName(subscription?.planType || '')} is currently active and in good standing. 
-              {subscription?.planType === 'premium' ? ' Enjoy 3 years of unlimited access!' : ' Enjoy your premium features!'}
             </p>
           </div>
         </div>

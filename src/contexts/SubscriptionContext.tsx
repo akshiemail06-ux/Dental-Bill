@@ -4,7 +4,6 @@ import { db } from '../lib/firebase';
 import { useAuth } from './AuthContext';
 import { Subscription, PlanType } from '../types';
 import { differenceInDays } from 'date-fns';
-import { toast } from 'sonner';
 
 interface SubscriptionContextType {
   subscription: Subscription | null;
@@ -38,28 +37,7 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     }
 
     if (profile?.subscription) {
-      const sub = profile.subscription;
-      
-      // Better date resolution
-      const resolveDate = (val: any) => {
-        if (!val) return null;
-        if (val instanceof Timestamp) return val.toDate();
-        if (val.seconds) return new Date(val.seconds * 1000);
-        return new Date(val);
-      };
-
-      const trialEndDate = resolveDate(sub.trialEndDate);
-      const purchasedAt = resolveDate(sub.purchasedAt);
-
-      setSubscription({
-        planType: sub.planType || 'trial',
-        billsUsed: sub.billsUsed || 0,
-        billLimit: sub.billLimit || 'unlimited',
-        trialStartDate: resolveDate(sub.trialStartDate) || profile.createdAt || new Date(),
-        trialEndDate: trialEndDate || (sub.planType === 'premium' ? new Date(Date.now() + 3 * 365 * 24 * 60 * 60 * 1000) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)),
-        purchasedAt: purchasedAt,
-        updatedAt: resolveDate(sub.updatedAt) || new Date(),
-      } as Subscription);
+      setSubscription(profile.subscription);
       setLoading(false);
     } else if (profile) {
       // Handle cases where profile exists but subscription doesn't (legacy users)
@@ -78,31 +56,31 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     }
   }, [profile, isDemo]);
 
-  const { trialEndDate, isSubscriptionExpired, daysLeft } = useMemo(() => {
+  const { trialEndDate, isTrialExpired, daysLeft } = useMemo(() => {
     const end = subscription?.trialEndDate 
       ? (subscription.trialEndDate instanceof Timestamp 
           ? subscription.trialEndDate.toDate() 
           : new Date(subscription.trialEndDate as any)) 
       : null;
     
-    // All plans can expire if an end date is set
-    const expired = end ? end < new Date() : false;
+    const expired = subscription?.planType === 'trial' && end ? end < new Date() : false;
     const left = end ? Math.max(0, differenceInDays(end, new Date())) : 0;
     
-    return { trialEndDate: end, isSubscriptionExpired: expired, daysLeft: left };
+    return { trialEndDate: end, isTrialExpired: expired, daysLeft: left };
   }, [subscription]);
 
   const canCreateBill = useMemo(() => {
     if (isDemo) return true;
     if (!subscription) return true; 
     
-    // Check for expiration regardless of plan type
-    if (isSubscriptionExpired) return false;
+    if (subscription.planType === 'trial') {
+      return !isTrialExpired;
+    }
     
     if (subscription.billLimit === 'unlimited') return true;
     
     return subscription.billsUsed < (subscription.billLimit as number);
-  }, [subscription, isSubscriptionExpired, isDemo]);
+  }, [subscription, isTrialExpired, isDemo]);
 
   const incrementBillCount = async () => {
     if (isDemo || !user || !subscription) return;
@@ -121,68 +99,17 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
   const upgradePlan = async (planType: PlanType) => {
     if (isDemo || !user) return;
 
-    if (!planType) {
-      console.error("upgradePlan called with invalid planType:", planType);
-      toast.error("Invalid plan selection. Please try again.");
-      return;
-    }
-
     let billLimit: number | 'unlimited' = 'unlimited';
-    let durationDays = 30; // Default to 30 days
+    if (planType === 'basic') billLimit = 300;
 
-    if (planType === 'basic') {
-      billLimit = 300;
-      durationDays = 30;
-    } else if (planType === 'pro') {
-      billLimit = 'unlimited';
-      durationDays = 30;
-    } else if (planType === 'premium') {
-      billLimit = 'unlimited';
-      durationDays = 365 * 3; // 3 Years for the 2999 plan
-    }
-
-    // Set expiry based on plan duration
-    const newExpiryDate = new Date();
-    if (planType === 'premium') {
-      newExpiryDate.setFullYear(newExpiryDate.getFullYear() + 3);
-      // Reset time to end of day
-      newExpiryDate.setHours(23, 59, 59, 999);
-    } else {
-      newExpiryDate.setMonth(newExpiryDate.getMonth() + 1);
-      newExpiryDate.setHours(23, 59, 59, 999);
-    }
-
-    const it = toast.loading('Processing upgrade...');
     try {
       const userDocRef = doc(db, 'users', user.uid);
-      
-      // Double check date calculation to avoid "29 days" bug for years
-      const now = new Date();
-      const newExpiryDate = new Date();
-      if (planType === 'premium') {
-        newExpiryDate.setFullYear(now.getFullYear() + 3);
-        // Important: ensure we don't accidentally lose a day due to leap years or month boundaries
-        // Setting to end of day 3 years from now
-        newExpiryDate.setHours(23, 59, 59, 999);
-      } else {
-        newExpiryDate.setMonth(now.getMonth() + 1);
-        newExpiryDate.setHours(23, 59, 59, 999);
-      }
-
       await updateDoc(userDocRef, {
         'subscription.planType': planType,
         'subscription.billLimit': billLimit,
-        'subscription.trialEndDate': Timestamp.fromDate(newExpiryDate),
-        'subscription.updatedAt': serverTimestamp(),
-        'subscription.purchasedAt': serverTimestamp()
-      });
-      
-      toast.dismiss(it);
-      toast.success(`Successfully activated ${planType.charAt(0).toUpperCase() + planType.slice(1)} plan!`, {
-        description: planType === 'premium' ? 'Your 3-year infinite access is now active.' : 'Your subscription has been updated.'
+        'subscription.updatedAt': serverTimestamp()
       });
     } catch (err) {
-      toast.dismiss(it);
       console.error("Error upgrading plan:", err);
       throw err;
     }
@@ -192,7 +119,7 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     <SubscriptionContext.Provider value={{ 
       subscription, 
       loading, 
-      isTrialExpired: isSubscriptionExpired, // Keep name for compatibility or rename in interface
+      isTrialExpired, 
       daysLeft, 
       canCreateBill, 
       incrementBillCount,

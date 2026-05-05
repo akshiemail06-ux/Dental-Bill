@@ -8,7 +8,6 @@ export interface Subscription {
   billLimit: number | 'unlimited';
   trialStartDate: Timestamp | Date;
   trialEndDate: Timestamp | Date;
-  purchasedAt?: Timestamp | Date;
   updatedAt: Timestamp | Date;
 }
 
