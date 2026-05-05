@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   CheckCircle2, 
@@ -24,6 +24,33 @@ import { Logo } from '../components/Logo';
 const SEOLandingIndiaPage: React.FC = () => {
   const { setIsDemo } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // SEO Meta Updates
+    document.title = "Best Dental Clinic Software in India | Instant Dental Bill";
+    
+    // Update Meta Description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Looking for the best dental clinic software in India? Instant Dental Bill offers the top-rated dental practice management software for billing, patient records, and orthodontic installments.');
+    } else {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      metaDescription.setAttribute('content', 'Looking for the best dental clinic software in India? Instant Dental Bill offers the top-rated dental practice management software for billing, patient records, and orthodontic installments.');
+      document.head.appendChild(metaDescription);
+    }
+
+    // Update Meta Keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'Best dental clinic software in india, dental billing software, dental practice management software, dentist software india');
+    } else {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      metaKeywords.setAttribute('content', 'Best dental clinic software in india, dental billing software, dental practice management software, dentist software india');
+      document.head.appendChild(metaKeywords);
+    }
+  }, []);
 
   const handleStartDemo = () => {
     setIsDemo(true);

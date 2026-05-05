@@ -4,7 +4,7 @@ import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useClinic } from '../contexts/ClinicContext';
 import { useAuth } from '../contexts/AuthContext';
-import { handleFirestoreError } from '../lib/error-handler';
+import { handleFirestoreError, OperationType } from '../lib/error-handler';
 import AppLayout from '../components/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -203,56 +203,55 @@ export default function SettingsPage() {
     }
     if (!clinic?.id) return;
 
-    const urlToDelete = field === 'signatureUrl' && doctorId 
-      ? doctors.find(d => d.id === doctorId)?.signatureUrl 
-      : (formData as any)[field];
-    
-    if (urlToDelete) {
-      await deleteClinicAsset(urlToDelete);
-    }
-    
-    if (field === 'signatureUrl' && doctorId) {
-      const updatedDoctors = doctors.map(d => {
-        const isTarget = d.id === doctorId;
-        return {
-          id: d.id,
-          name: d.name || '',
-          qualification: d.qualification || '',
-          registrationNumber: (d.registrationNumber || d.regNumber || '').trim(),
-          isMain: !!d.isMain,
-          signatureUrl: isTarget ? '' : (d.signatureUrl || '')
-        };
-      });
-
-      // Final sanitization to strip base64 from other doctors
-      const sanitizedDoctors = updatedDoctors.map(d => {
-        const cleanDoc = { ...d };
-        if (cleanDoc.signatureUrl && cleanDoc.signatureUrl.startsWith('data:image')) {
-          const originalDoc = clinic.doctors?.find((orig: any) => orig.id === d.id);
-          if (originalDoc && originalDoc.signatureUrl && originalDoc.signatureUrl.startsWith('local-asset:')) {
-            cleanDoc.signatureUrl = originalDoc.signatureUrl;
-          } else {
-            cleanDoc.signatureUrl = '';
+    try {
+      const type = field === 'logoUrl' ? 'logo' : field === 'stampUrl' ? 'stamp' : 'signature';
+      
+      // 1. Delete from IndexedDB using direct key logic (more reliable)
+      await deleteClinicAsset(clinic.id, type, doctorId);
+      
+      // 2. Update Firestore and state
+      if (type === 'signature' && doctorId) {
+        const updatedDoctors = doctors.map(d => {
+          if (d.id === doctorId) {
+            return { ...d, signatureUrl: '' };
           }
+          return d;
+        });
+        
+        setDoctors(updatedDoctors);
+        
+        // Instant sync to Firestore for this specific field change
+        try {
+          await updateDoc(doc(db, 'clinics', clinic.id), {
+            doctors: updatedDoctors,
+            updatedAt: serverTimestamp()
+          });
+        } catch (err) {
+          handleFirestoreError(err, OperationType.UPDATE, `clinics/${clinic.id}`);
         }
-        return cleanDoc;
-      });
-
-      setDoctors(updatedDoctors);
-      await updateDoc(doc(db, 'clinics', clinic.id), {
-        doctors: sanitizedDoctors,
-        updatedAt: serverTimestamp()
-      });
-    } else {
-      setFormData({ ...formData, [field]: '' });
-      await updateDoc(doc(db, 'clinics', clinic.id), {
-        [field]: '',
-        updatedAt: serverTimestamp()
-      });
+      } else {
+        setFormData({ ...formData, [field]: '' });
+        
+        // Instant sync to Firestore for this specific field change
+        try {
+          await updateDoc(doc(db, 'clinics', clinic.id), {
+            [field]: '',
+            updatedAt: serverTimestamp()
+          });
+        } catch (err) {
+          handleFirestoreError(err, OperationType.UPDATE, `clinics/${clinic.id}`);
+        }
+      }
+      
+      toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} removed successfully`);
+      
+      if (refreshLocalAssets) {
+        await refreshLocalAssets();
+      }
+    } catch (error) {
+      console.error('Error removing asset:', error);
+      toast.error('Failed to remove asset completely');
     }
-    
-    await refreshLocalAssets();
-    toast.success('Asset removed from this device');
   };
 
   const handleAddDoctor = () => {

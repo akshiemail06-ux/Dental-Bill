@@ -175,34 +175,39 @@ service cloud.firestore {
     }
 
     function isSuperAdmin() {
-      return request.auth.token.email in ["akshiemail06@gmail.com", "harinderkumar6886@gmail.com", "akshitb948@gmail.com"];
+      return isAuthenticated() && 
+             request.auth.token.email_verified == true &&
+             request.auth.token.email in ["akshiemail06@gmail.com", "harinderkumar6886@gmail.com", "akshitb948@gmail.com"];
     }
 
     // Clinics collection
     match /clinics/{clinicId} {
-      allow get: if isAuthenticated() && (existing().ownerId == request.auth.uid || getUserData().clinicId == clinicId);
-      allow list: if isAuthenticated() && resource.data.ownerId == request.auth.uid;
+      allow get: if isAuthenticated() && (existing().ownerId == request.auth.uid || getUserData().clinicId == clinicId || isSuperAdmin());
+      allow list: if isAuthenticated() && (resource.data.ownerId == request.auth.uid || isSuperAdmin());
       allow create: if isVerified() && 
                       isValidClinic(incoming()) &&
                       incoming().createdAt == request.time &&
                       incoming().updatedAt == request.time;
       allow update: if isVerified() && 
-                      existing().ownerId == request.auth.uid &&
+                      (existing().ownerId == request.auth.uid || isSuperAdmin()) &&
                       isValidClinic(incoming()) &&
                       incoming().ownerId == existing().ownerId &&
                       incoming().updatedAt == request.time;
-      allow delete: if false;
+      allow delete: if isSuperAdmin();
     }
 
     // Bills collection
     match /bills/{billId} {
+      // allow get: if true; // Public access for sharing invoices with patients
+      // We keep this public so patients don't need an account to view their bills.
+      // However, we restrict LIST to keep data private.
       allow get: if true; 
       
       // Cost Optimized List: Check UID directly if possible to avoid get()
-      allow list: if isAuthenticated() && (
+      allow list: if (isAuthenticated() && (
         resource.data.ownerId == request.auth.uid || 
         belongsToClinic(resource.data.clinicId)
-      );
+      )) || isSuperAdmin();
 
       allow create: if isVerified() && 
                       isValidBill(incoming()) &&
@@ -282,8 +287,8 @@ service cloud.firestore {
 
     // Blogs collection
     match /blogs/{blogId} {
-      allow read: if existing().status == 'published' || (isAuthenticated() && request.auth.token.email in ["akshiemail06@gmail.com", "akshitb948@gmail.com"]);
-      allow write: if isVerified() && request.auth.token.email in ["akshiemail06@gmail.com", "akshitb948@gmail.com"];
+      allow read: if existing().status == 'published' || isSuperAdmin();
+      allow write: if isSuperAdmin();
     }
 
   }
