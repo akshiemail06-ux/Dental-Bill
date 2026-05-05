@@ -324,14 +324,21 @@ export default function SettingsPage() {
       const uppercaseClinicName = formData.name.trim().toUpperCase();
       const uppercaseAddress = (formData.address || '').trim().toUpperCase();
       
-      const formattedDoctors = doctors.map(d => ({
-        id: d.id,
-        name: d.name.trim().toUpperCase().startsWith('DR. ') ? d.name.trim().toUpperCase() : `DR. ${d.name.trim().toUpperCase()}`,
-        qualification: (d.qualification || '').trim().toUpperCase(),
-        registrationNumber: (d.registrationNumber || d.regNumber || '').trim().toUpperCase(),
-        isMain: !!d.isMain,
-        signatureUrl: d.signatureUrl || ''
-      }));
+      const formattedDoctors = doctors.map(d => {
+        const trimmedName = d.name.trim();
+        // Check if name already starts with Dr or Dr. (case insensitive)
+        const hasDrPrefix = trimmedName.toLowerCase().startsWith('dr ') || trimmedName.toLowerCase().startsWith('dr.');
+        const finalDocName = hasDrPrefix ? trimmedName.toUpperCase() : `DR. ${trimmedName.toUpperCase()}`;
+        
+        return {
+          id: d.id,
+          name: finalDocName,
+          qualification: (d.qualification || '').trim().toUpperCase(),
+          registrationNumber: (d.registrationNumber || d.regNumber || '').trim().toUpperCase(),
+          isMain: !!d.isMain,
+          signatureUrl: d.signatureUrl || ''
+        };
+      });
 
       const mainDoctor = formattedDoctors.find(d => d.isMain) || formattedDoctors[0];
 

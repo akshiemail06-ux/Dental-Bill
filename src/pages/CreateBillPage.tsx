@@ -483,7 +483,9 @@ export default function CreateBillPage() {
                   <Label>Payment Method</Label>
                   <Select value={paymentMethodForUpdate} onValueChange={setPaymentMethodForUpdate}>
                     <SelectTrigger className="h-12 rounded-xl">
-                      <SelectValue />
+                      <SelectValue placeholder="Select Method">
+                        {paymentMethodForUpdate}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Cash">Cash</SelectItem>
@@ -856,7 +858,12 @@ export default function CreateBillPage() {
                   <Label>Payment Status</Label>
                   <Select value={paymentStatus} onValueChange={(val: any) => setPaymentStatus(val)}>
                     <SelectTrigger className="h-11 rounded-xl">
-                      <SelectValue />
+                      <SelectValue placeholder="Select Status">
+                        {paymentStatus === 'paid' ? 'Paid' : 
+                         paymentStatus === 'unpaid' ? 'Unpaid' : 
+                         paymentStatus === 'partial' ? 'Partial Payment' : 
+                         paymentStatus === 'draft' ? 'Draft' : 'Select Status'}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="paid">Paid</SelectItem>
@@ -886,7 +893,9 @@ export default function CreateBillPage() {
                   <Label>Payment Method</Label>
                   <Select value={paymentMethod} onValueChange={setPaymentMethod}>
                     <SelectTrigger className="h-11 rounded-xl">
-                      <SelectValue />
+                      <SelectValue placeholder="Select Method">
+                        {paymentMethod}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Cash">Cash</SelectItem>

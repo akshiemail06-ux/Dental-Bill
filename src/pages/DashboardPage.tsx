@@ -657,7 +657,7 @@ Thank you.`;
         {/* Charts & Widgets Section */}
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Subscription Usage Widget */}
-          {subscription?.planType && (subscription.planType === 'trial' || subscription.planType === 'basic') && (
+          {subscription?.planType && (
              <Card className="lg:col-span-3 border-none shadow-sm bg-white overflow-hidden">
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -667,12 +667,17 @@ Thank you.`;
                       </div>
                       <div>
                         <h3 className="text-lg font-bold text-gray-900">
-                          {subscription.planType === 'trial' ? 'Free Trial usage' : 'Plan Usage'}
+                          {subscription.planType === 'trial' ? 'Free Trial usage' : 
+                           subscription.planType === 'premium' ? 'Infinite Edition Status' : 'Plan Usage'}
                         </h3>
                         <p className="text-sm text-gray-500">
                           {subscription.planType === 'trial' 
                             ? `You have ${daysLeft} days remaining in your trial.` 
-                            : `You have used ${billsUsed} of your ${billLimit} bill limit.`}
+                            : subscription.planType === 'premium'
+                              ? daysLeft >= 365 
+                                ? `You have ${Math.floor(daysLeft/365)}Y ${daysLeft%365}D remaining in your 3-year plan.`
+                                : `Your 3-year plan is active. (${daysLeft} days remaining in current cycle)`
+                              : `You have ${daysLeft} days remaining in your current billing cycle.`}
                         </p>
                       </div>
                     </div>
@@ -685,7 +690,7 @@ Thank you.`;
                        <Progress value={usagePercentage} className="h-2 bg-gray-100" />
                     </div>
 
-                    <Link to="/subscription">
+                    <Link to="/membership">
                       <Button variant="outline" className="border-blue-200 text-blue-600 hover:bg-blue-50 font-bold">
                         Manage Plan
                       </Button>

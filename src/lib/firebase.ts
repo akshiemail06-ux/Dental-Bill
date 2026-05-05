@@ -9,7 +9,7 @@ const app = initializeApp(firebaseConfig);
 // Use initializeFirestore with experimentalForceLongPolling for better stability in some network environments (like proxies/iframes)
 export const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
-}, firebaseConfig.firestoreDatabaseId);
+}, firebaseConfig.firestoreDatabaseId === '(default)' ? undefined : firebaseConfig.firestoreDatabaseId);
 
 export const auth = getAuth(app);
 

@@ -7,6 +7,8 @@ import { Progress, ProgressTrack, ProgressIndicator } from '@/components/ui/prog
 import { Badge } from '@/components/ui/badge';
 import { motion } from 'motion/react';
 import AppLayout from '../components/AppLayout';
+import { Timestamp } from 'firebase/firestore';
+import { format } from 'date-fns';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -76,7 +78,30 @@ export default function MembershipPage() {
                   <p className="text-gray-500 text-sm font-medium mt-1">
                     {subscription?.planType === 'trial' 
                       ? `Your free trial ends in ${daysLeft} days.` 
-                      : subscription?.planType === 'premium' ? 'Your access never expires.' : 'Billed monthly.'}
+                      : subscription?.planType === 'premium' ? 'Infinite Edition • 3 Years Full Access' : 'Monthly Premium Subscription'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-3 pt-2">
+                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                  <p className="text-gray-400 font-medium tracking-widest uppercase text-[10px]">Valid Until</p>
+                  <p className="text-xl font-black text-gray-900">
+                    {subscription?.trialEndDate ? format(subscription.trialEndDate instanceof Timestamp ? subscription.trialEndDate.toDate() : new Date(subscription.trialEndDate as any), 'dd MMM, yyyy') : 'N/A'}
+                  </p>
+                </div>
+                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                  <p className="text-gray-400 font-medium tracking-widest uppercase text-[10px]">Time Remaining</p>
+                  <p className="text-xl font-black text-gray-900">
+                    {daysLeft >= 365 
+                      ? `${Math.floor(daysLeft / 365)}Y ${daysLeft % 365}D` 
+                      : `${daysLeft} Days`}
+                  </p>
+                </div>
+                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
+                  <p className="text-gray-400 font-medium tracking-widest uppercase text-[10px]">Bill Limit</p>
+                  <p className="text-xl font-black text-gray-900">
+                    {billLimit === Infinity ? 'Unlimited' : billLimit}
                   </p>
                 </div>
               </div>
@@ -95,16 +120,63 @@ export default function MembershipPage() {
                 </div>
               )}
 
-              <div className="grid gap-4 sm:grid-cols-2 pt-2">
-                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
-                  <p className="text-gray-400 font-medium tracking-widest uppercase text-[10px]">Bills Generated</p>
-                  <p className="text-2xl font-black text-gray-900">{billsUsed}</p>
+              <div className="p-5 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-between">
+                <div>
+                   <p className="text-blue-400 font-medium tracking-widest uppercase text-[10px]">Usage</p>
+                   <p className="text-2xl font-black text-blue-900">{billsUsed} Bills Generated</p>
                 </div>
-                <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100 space-y-1">
-                  <p className="text-gray-400 font-medium tracking-widest uppercase text-[10px]">Monthly Limit</p>
-                  <p className="text-2xl font-black text-gray-900">
-                    {billLimit === Infinity ? 'Unlimited' : billLimit}
-                  </p>
+                {billLimit !== Infinity && (
+                  <div className="text-right">
+                    <p className="text-blue-400 font-medium tracking-widest uppercase text-[10px]">Percentage</p>
+                    <p className="text-xl font-black text-blue-900">{usagePercentage.toFixed(1)}%</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Transaction History Placeholder */}
+              <div className="pt-6 border-t border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-black text-gray-900 uppercase tracking-widest flex items-center gap-2">
+                    <BarChart3 size={16} className="text-blue-600" />
+                    Billing History
+                  </h3>
+                </div>
+                <div className="bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-100/50 text-gray-400 font-bold uppercase text-[10px]">
+                        <tr>
+                          <th className="px-6 py-3 text-left">Date</th>
+                          <th className="px-6 py-3 text-left">Plan</th>
+                          <th className="px-6 py-3 text-left">Amount</th>
+                          <th className="px-6 py-3 text-left">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {subscription?.planType !== 'trial' ? (
+                          <tr>
+                            <td className="px-6 py-4 text-gray-600 font-medium font-mono">
+                              {subscription?.updatedAt ? format(subscription.updatedAt instanceof Timestamp ? subscription.updatedAt.toDate() : new Date(subscription.updatedAt as any), 'dd MMM yyyy') : 'N/A'}
+                            </td>
+                            <td className="px-6 py-4 text-gray-900 font-bold uppercase">{subscription?.planType}</td>
+                            <td className="px-6 py-4 text-gray-900 font-black">
+                              {subscription?.planType === 'premium' ? '₹2999' : 
+                               subscription?.planType === 'basic' ? '₹299' : '₹0'}
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-black uppercase">Paid</span>
+                            </td>
+                          </tr>
+                        ) : (
+                          <tr>
+                            <td colSpan={4} className="px-6 py-10 text-center text-gray-400 italic">
+                              No billing history found. Upgrade to a paid plan to see invoices.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
