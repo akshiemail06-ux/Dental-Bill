@@ -2,9 +2,9 @@ import { compressImage } from './imageUtils';
 import { saveLocalAsset, deleteLocalAsset } from './localStore';
 
 /**
- * Handles "uploading" of clinic assets by saving them to local IndexedDB storage ONLY.
- * NO CLOUD SYNC: Branding assets (logo, stamp, signature) are kept strictly in the browser.
- * Returns a reference prefixed with 'local-asset:' to be stored in Firestore.
+ * Handles "uploading" of clinic assets by compressing them and saving to local IndexedDB 
+ * AND returning the Base64 data for cloud sync in Firestore.
+ * This ensures branding is available across all devices and to patients.
  */
 export const uploadClinicAsset = async (
   clinicId: string, 
@@ -12,13 +12,13 @@ export const uploadClinicAsset = async (
   assetType: 'logo' | 'stamp' | 'signature',
   doctorId: string | null = null
 ): Promise<string> => {
-  console.log(`Starting local storage for ${assetType}...`);
+  console.log(`Starting cloud-enabled storage for ${assetType}...`);
   try {
     // 1. Compress image
     // Signatures and stamps need transparency (PNG), so we reduce size by lowering resolution
     // Logos can be JPEG or PNG.
-    const maxWidth = assetType === 'signature' ? 400 : assetType === 'stamp' ? 300 : 300;
-    const compressedDataUrl = await compressImage(dataUrl, maxWidth, 0.82);
+    const maxWidth = assetType === 'signature' ? 300 : assetType === 'stamp' ? 200 : 250;
+    const compressedDataUrl = await compressImage(dataUrl, maxWidth, 0.6);
     
     // 2. Save to Local IndexedDB for offline support/fallback
     const localKey = doctorId 
@@ -37,13 +37,19 @@ export const uploadClinicAsset = async (
 };
 
 /**
- * Handles deletion of local assets
+ * Handles deletion of local assets from IndexedDB correctly.
+ * Can take either a URL (if it's local-asset:) or direct parameters to construct the key.
  */
-export const deleteClinicAsset = async (url: string): Promise<void> => {
-  if (!url || !url.startsWith('local-asset:')) return;
-  
+export const deleteClinicAsset = async (
+  clinicId: string, 
+  assetType: 'logo' | 'stamp' | 'signature',
+  doctorId: string | null = null
+): Promise<void> => {
   try {
-    const key = url.replace('local-asset:', '');
+    const key = doctorId 
+      ? `clinic-asset:${clinicId}:signature:${doctorId}`
+      : `clinic-asset:${clinicId}:${assetType}`;
+    
     console.log(`Deleting local asset: ${key}`);
     await deleteLocalAsset(key);
   } catch (error) {

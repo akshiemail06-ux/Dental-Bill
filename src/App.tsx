@@ -37,11 +37,12 @@ const UpgradePage = lazy(() => import('./pages/UpgradePage'));
 const BlogListingPage = lazy(() => import('./pages/BlogListingPage'));
 const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage'));
 const SEOLandingIndiaPage = lazy(() => import('./pages/SEOLandingIndiaPage'));
+const SubscriptionPage = lazy(() => import('./pages/SubscriptionPage'));
 
 const LoadingFallback = ({ message = "Loading..." }: { message?: string }) => (
   <div className="flex h-screen w-full flex-col items-center justify-center bg-white">
     <div className="flex flex-col items-center gap-4">
-      <div className="animate-pulse">
+      <div className="animate-pulse text-blue-600">
         <Logo showText={false} iconClassName="h-16 w-16" />
       </div>
       <div className="flex items-center gap-2 text-gray-500 font-medium">
@@ -133,6 +134,12 @@ export default function App() {
                       <Route path="/upgrade" element={
                         <ProtectedRoute>
                           <UpgradePage />
+                        </ProtectedRoute>
+                      } />
+
+                      <Route path="/subscription" element={
+                        <ProtectedRoute>
+                          <SubscriptionPage />
                         </ProtectedRoute>
                       } />
 

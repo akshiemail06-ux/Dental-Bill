@@ -8,7 +8,7 @@ function Switch({
   checked,
   onCheckedChange,
   ...props
-}: React.ComponentProps<"input"> & {
+}: Omit<React.ComponentProps<"input">, "size"> & {
   size?: "sm" | "default"
   onCheckedChange?: (checked: boolean) => void
 }) {

@@ -52,8 +52,9 @@ function Button({
     // Note: asChild is normally handled by standard Radix Slot but here we just render children if it is a single element
     const { children } = props as any;
     if (React.isValidElement(children)) {
+      const childProps = children.props as any;
       return React.cloneElement(children as React.ReactElement<any>, {
-        className: cn(buttonVariants({ variant, size, className }), children.props.className),
+        className: cn(buttonVariants({ variant, size, className }), childProps.className),
         ...props
       });
     }

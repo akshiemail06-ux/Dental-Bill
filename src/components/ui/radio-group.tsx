@@ -8,9 +8,10 @@ function RadioGroup({ className, value, onValueChange, children, ...props }: any
     <div className={cn("grid w-full gap-2", className)} {...props}>
       {React.Children.map(children, child => {
         if (React.isValidElement(child)) {
+          const childProps = child.props as any;
           return React.cloneElement(child as React.ReactElement<any>, { 
-            checked: child.props.value === value,
-            onChange: () => onValueChange?.(child.props.value) 
+            checked: childProps.value === value,
+            onChange: () => onValueChange?.(childProps.value) 
           });
         }
         return child;

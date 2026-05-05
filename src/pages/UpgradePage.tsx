@@ -18,10 +18,10 @@ const plans = [
     name: 'Basic Plan', 
     price: '₹299', 
     period: '/mo', 
-    limit: '300 bills',
+    limit: '300 Total',
     features: [
       'All Premium Features included',
-      '300 bill generation per month',
+      '300 bill generations included',
       'Ortho Case Management',
       'Patient Records & History',
       'Mobile & Desktop access',

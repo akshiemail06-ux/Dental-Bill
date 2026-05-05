@@ -18,7 +18,8 @@ import {
   Plus,
   UserPlus,
   FilePlus,
-  Calendar
+  Calendar,
+  CreditCard
 } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -59,6 +60,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     { name: 'Ortho Patients', path: '/ortho', icon: Stethoscope },
     { name: 'Bill History', path: '/bills', icon: History },
     { name: 'Reports', path: '/reports', icon: Activity },
+    { name: 'Plan & Billing', path: '/subscription', icon: CreditCard },
     { name: 'Settings', path: '/settings', icon: Settings },
     { name: 'Troubleshoot', path: '/troubleshoot', icon: HelpCircle },
   ];
@@ -253,7 +255,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Modals & Popups */}
       <BookmarkGuide open={isBookmarkGuideOpen} onOpenChange={setIsBookmarkGuideOpen} />
       <DemoWelcomePopup />
-      {isTrialExpired && user && !isDemo && <TrialEndedModal />}
+      {user && !isDemo && <TrialEndedModal isOpen={isTrialExpired} />}
     </div>
   </div>
   );

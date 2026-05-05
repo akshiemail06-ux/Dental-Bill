@@ -3,6 +3,7 @@ import { collection, query, where, onSnapshot, orderBy, limit, addDoc, doc, getD
 import { db } from '../lib/firebase';
 import { useClinic } from '../contexts/ClinicContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useSubscription } from '../contexts/SubscriptionContext';
 import { handleFirestoreError } from '../lib/error-handler';
 import AppLayout from '../components/AppLayout';
 import { motion, AnimatePresence } from 'motion/react';
@@ -33,9 +34,11 @@ import {
   Loader2,
   MessageCircle,
   Building2,
-  Wallet // Added Wallet icon
+  Wallet, // Added Wallet icon
+  Zap
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bill, OrthoPatient, OrthoVisit } from '../types';
 import { format, startOfMonth, endOfMonth, isToday, isWithinInterval, subMonths } from 'date-fns';
@@ -515,6 +518,11 @@ Thank you.`;
     }
   ];
 
+  const { subscription, daysLeft } = useSubscription();
+  const billsUsed = subscription?.billsUsed || 0;
+  const billLimit = subscription?.billLimit === 'unlimited' ? Infinity : (subscription?.billLimit as number || 0);
+  const usagePercentage = billLimit === Infinity ? 0 : Math.min(100, (billsUsed / billLimit) * 100);
+
   // Logic to hide banner if clinic is already setup
   const isClinicSetupComplete = clinic && (
     clinic.name !== 'MY DENTAL CLINIC' && 
@@ -648,6 +656,45 @@ Thank you.`;
 
         {/* Charts & Widgets Section */}
         <div className="grid gap-6 lg:grid-cols-3">
+          {/* Subscription Usage Widget */}
+          {subscription?.planType && (subscription.planType === 'trial' || subscription.planType === 'basic') && (
+             <Card className="lg:col-span-3 border-none shadow-sm bg-white overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl">
+                        <Zap size={24} />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900">
+                          {subscription.planType === 'trial' ? 'Free Trial usage' : 'Plan Usage'}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {subscription.planType === 'trial' 
+                            ? `You have ${daysLeft} days remaining in your trial.` 
+                            : `You have used ${billsUsed} of your ${billLimit} bill limit.`}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 w-full max-w-md space-y-2">
+                       <div className="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-widest">
+                          <span>Usage</span>
+                          <span>{billsUsed} / {billLimit === Infinity ? '∞' : billLimit} Bills</span>
+                       </div>
+                       <Progress value={usagePercentage} className="h-2 bg-gray-100" />
+                    </div>
+
+                    <Link to="/subscription">
+                      <Button variant="outline" className="border-blue-200 text-blue-600 hover:bg-blue-50 font-bold">
+                        Manage Plan
+                      </Button>
+                    </Link>
+                  </div>
+                </CardContent>
+             </Card>
+          )}
+
           <Card className="lg:col-span-2 border-none shadow-sm overflow-hidden">
             <CardHeader className="border-b border-gray-50 pb-4">
               <div className="flex items-center justify-between">

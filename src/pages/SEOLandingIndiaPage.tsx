@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   CheckCircle2, 
@@ -19,10 +19,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from '@/components/ui/button';
+import { Logo } from '../components/Logo';
 
 const SEOLandingIndiaPage: React.FC = () => {
   const { setIsDemo } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // SEO Meta Updates
+    document.title = "Best Dental Clinic Software in India | Instant Dental Bill";
+    
+    // Update Meta Description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Looking for the best dental clinic software in India? Instant Dental Bill offers the top-rated dental practice management software for billing, patient records, and orthodontic installments.');
+    } else {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      metaDescription.setAttribute('content', 'Looking for the best dental clinic software in India? Instant Dental Bill offers the top-rated dental practice management software for billing, patient records, and orthodontic installments.');
+      document.head.appendChild(metaDescription);
+    }
+
+    // Update Meta Keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'Best dental clinic software in india, dental billing software, dental practice management software, dentist software india');
+    } else {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      metaKeywords.setAttribute('content', 'Best dental clinic software in india, dental billing software, dental practice management software, dentist software india');
+      document.head.appendChild(metaKeywords);
+    }
+  }, []);
 
   const handleStartDemo = () => {
     setIsDemo(true);
@@ -35,10 +63,8 @@ const SEOLandingIndiaPage: React.FC = () => {
       <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            <Link to="/" className="flex items-center gap-2">
-              <span className="text-xl font-bold tracking-tight text-slate-900">
-                Instant<span className="text-blue-600">Dental</span>Bill
-              </span>
+            <Link to="/">
+              <Logo />
             </Link>
             <div className="hidden md:flex items-center gap-8">
               <Link to="/" className="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Home</Link>
