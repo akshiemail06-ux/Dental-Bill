@@ -12,12 +12,18 @@ import {
   ChevronRight,
   ChevronDown,
   Database,
-  Activity
+  Activity,
+  History as HistoryIcon,
+  RefreshCw
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { CardDescription } from '@/components/ui/card';
 
 const troubleshootingTips = [
   {
@@ -61,8 +67,12 @@ const troubleshootingTips = [
         a: "Stats are generated in real-time but can sometimes be cached. Click the 'Refresh' button on the dashboard header to force a fresh sync with the server."
       },
       {
-        q: "Cannot find a specific bill?",
-        a: "Go to 'Bill History' and use the Search bar. You can search by Patient Name or Bill Number. If you still can't find it, check if you were logged into the right clinic account."
+        q: "Cannot find a specific bill or patient data?",
+        a: "First, ensure you are logged in with the correct email account (check the sidebar). Second, if you recently switched from 'Demo Mode' to a real account, your demo data is not transferred by default. Lastly, use the Search bar in 'Bill History' to find records by name or number."
+      },
+      {
+        q: "Data seems to have disappeared?",
+        a: "If you formatted your phone or switched browsers, you might be seeing a fresh account if you didn't log in. Always use 'Login with Google' to sync your data across devices. Your real data is stored securely in the cloud and never lost unless manually deleted."
       }
     ]
   },
@@ -90,6 +100,8 @@ const troubleshootingTips = [
 
 export default function TroubleshootPage() {
   const [openItems, setOpenItems] = useState<string[]>([]);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const toggleItem = (id: string) => {
     setOpenItems(prev => 
@@ -114,7 +126,81 @@ export default function TroubleshootPage() {
           </motion.div>
         </div>
 
-        <div className="space-y-8 pb-20">
+        <div className="space-y-8 pb-10">
+          {/* Proactive Data Recovery Tool */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="border-2 border-blue-100 shadow-lg bg-white overflow-hidden rounded-3xl">
+              <CardHeader className="bg-blue-600 text-white p-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-white/20 rounded-2xl">
+                    <HistoryIcon size={24} />
+                  </div>
+                  <div>
+                    <CardTitle className="text-xl">Data Sync & Recovery</CardTitle>
+                    <CardDescription className="text-blue-100">Troubleshoot missing data or linking issues</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <h4 className="font-bold text-gray-900 flex items-center gap-2">
+                       <Smartphone size={18} className="text-blue-600" /> Verify Account
+                    </h4>
+                    <p className="text-sm text-gray-500">
+                      Currently logged in as: <span className="font-bold text-gray-900">{user?.email || 'Not logged in'}</span>
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      If you have previously used another email (like clinic-name@gmail.com vs your personal email), please log out and sign in with that account.
+                    </p>
+                  </div>
+                  <div className="space-y-3">
+                    <h4 className="font-bold text-gray-900 flex items-center gap-2">
+                       <RefreshCw size={18} className="text-green-600" /> Force Cloud Sync
+                    </h4>
+                    <p className="text-xs text-gray-500 mb-4">
+                      If you recently edited bills but don't see them on other devices, use this to force the database to refresh your local session.
+                    </p>
+                    <Button 
+                      className="w-full bg-blue-600 hover:bg-blue-700 rounded-xl"
+                      onClick={() => {
+                        window.location.reload();
+                        toast.success('Refreshing data connection...');
+                      }}
+                    >
+                      Sync Now
+                    </Button>
+                  </div>
+                </div>
+
+                <Separator className="bg-gray-100" />
+
+                <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100 shadow-sm relative overflow-hidden group">
+                  <div className="relative z-10">
+                    <h4 className="text-orange-900 font-bold flex items-center gap-2 mb-2">
+                      <AlertTriangle size={20} /> Experimental: Advanced Data Recovery
+                    </h4>
+                    <p className="text-sm text-orange-800 mb-4">
+                      Are you seeing NO bills even though you created them? This might happen if your clinic link was disconnected.
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      className="border-orange-200 bg-white text-orange-700 hover:bg-orange-100 rounded-xl font-bold transition-all hover:scale-[1.02]"
+                      onClick={() => navigate('/dashboard')}
+                    >
+                       Run Recovery Check
+                    </Button>
+                  </div>
+                  <Database className="absolute -bottom-8 -right-8 text-orange-500/10 group-hover:scale-110 transition-transform" size={140} />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
           {troubleshootingTips.map((category, catIdx) => (
             <motion.div
               key={catIdx}

@@ -38,19 +38,27 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     }
 
     if (profile?.subscription) {
-      // Ensure all required fields exist to prevent undefined in Firestore updates
       const sub = profile.subscription;
-      const trialEndDate = sub.trialEndDate instanceof Timestamp 
-        ? sub.trialEndDate.toDate() 
-        : (sub.trialEndDate ? new Date(sub.trialEndDate as any) : null);
+      
+      // Better date resolution
+      const resolveDate = (val: any) => {
+        if (!val) return null;
+        if (val instanceof Timestamp) return val.toDate();
+        if (val.seconds) return new Date(val.seconds * 1000);
+        return new Date(val);
+      };
+
+      const trialEndDate = resolveDate(sub.trialEndDate);
+      const purchasedAt = resolveDate(sub.purchasedAt);
 
       setSubscription({
         planType: sub.planType || 'trial',
         billsUsed: sub.billsUsed || 0,
         billLimit: sub.billLimit || 'unlimited',
-        trialStartDate: sub.trialStartDate || profile.createdAt || new Date(),
+        trialStartDate: resolveDate(sub.trialStartDate) || profile.createdAt || new Date(),
         trialEndDate: trialEndDate || (sub.planType === 'premium' ? new Date(Date.now() + 3 * 365 * 24 * 60 * 60 * 1000) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)),
-        updatedAt: sub.updatedAt || new Date(),
+        purchasedAt: purchasedAt,
+        updatedAt: resolveDate(sub.updatedAt) || new Date(),
       } as Subscription);
       setLoading(false);
     } else if (profile) {
@@ -144,8 +152,23 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
       newExpiryDate.setHours(23, 59, 59, 999);
     }
 
+    const it = toast.loading('Processing upgrade...');
     try {
       const userDocRef = doc(db, 'users', user.uid);
+      
+      // Double check date calculation to avoid "29 days" bug for years
+      const now = new Date();
+      const newExpiryDate = new Date();
+      if (planType === 'premium') {
+        newExpiryDate.setFullYear(now.getFullYear() + 3);
+        // Important: ensure we don't accidentally lose a day due to leap years or month boundaries
+        // Setting to end of day 3 years from now
+        newExpiryDate.setHours(23, 59, 59, 999);
+      } else {
+        newExpiryDate.setMonth(now.getMonth() + 1);
+        newExpiryDate.setHours(23, 59, 59, 999);
+      }
+
       await updateDoc(userDocRef, {
         'subscription.planType': planType,
         'subscription.billLimit': billLimit,
@@ -153,10 +176,13 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
         'subscription.updatedAt': serverTimestamp(),
         'subscription.purchasedAt': serverTimestamp()
       });
+      
+      toast.dismiss(it);
       toast.success(`Successfully activated ${planType.charAt(0).toUpperCase() + planType.slice(1)} plan!`, {
         description: planType === 'premium' ? 'Your 3-year infinite access is now active.' : 'Your subscription has been updated.'
       });
     } catch (err) {
+      toast.dismiss(it);
       console.error("Error upgrading plan:", err);
       throw err;
     }

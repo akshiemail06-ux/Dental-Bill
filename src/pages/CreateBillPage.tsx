@@ -753,16 +753,36 @@ export default function CreateBillPage() {
 
             <Card className="border-none shadow-sm">
               <CardHeader>
-                <CardTitle className="text-lg font-semibold">Additional Notes</CardTitle>
+                <CardTitle className="text-lg font-semibold">Doctor & Notes</CardTitle>
               </CardHeader>
-              <CardContent>
-                <textarea 
-                  className="w-full rounded-xl border border-gray-200 p-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                  rows={3}
-                  placeholder="Any special instructions or follow-up notes..."
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                />
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Issuing Doctor</Label>
+                  <Select value={selectedDoctorId} onValueChange={setSelectedDoctorId}>
+                    <SelectTrigger className="h-11 rounded-xl">
+                      <SelectValue placeholder="Select Doctor">
+                        {clinic?.doctors?.find(d => d.id === selectedDoctorId)?.name || 'Select Doctor'}
+                      </SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {clinic?.doctors?.map(doc => (
+                        <SelectItem key={doc.id} value={doc.id || ''}>
+                          {doc.name} {doc.isMain ? '(Main)' : ''}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2 pt-2">
+                  <Label>Additional Notes</Label>
+                  <textarea 
+                    className="w-full rounded-xl border border-gray-200 p-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                    rows={3}
+                    placeholder="Any special instructions or follow-up notes..."
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>

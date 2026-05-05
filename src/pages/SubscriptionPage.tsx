@@ -107,7 +107,7 @@ export default function SubscriptionPage() {
                    {subscription?.planType === 'trial' ? 'Trial Ends On' : 'Valid Until'}
                 </p>
                 <p className="text-sm font-bold text-gray-900">
-                  {expiryDate ? format(expiryDate, 'dd MMM, yyyy') : 'Active'}
+                  {expiryDate ? format(expiryDate, 'do MMMM, yyyy') : 'Active permanent'}
                 </p>
               </div>
               <div className="space-y-1">
@@ -116,9 +116,12 @@ export default function SubscriptionPage() {
                   Time Remaining
                 </p>
                 <p className={`text-sm font-bold ${daysLeft < 5 ? 'text-red-600' : 'text-gray-900'}`}>
-                  {daysLeft >= 365 
-                    ? `${Math.floor(daysLeft / 365)} Years ${daysLeft % 365} Days` 
-                    : `${daysLeft} Days`}
+                  {subscription?.planType === 'premium' 
+                    ? (daysLeft >= 365 
+                        ? `${Math.floor(daysLeft / 365)} Year(s) and ${daysLeft % 365} Days` 
+                        : `${daysLeft} Days`)
+                    : `${daysLeft} Days`
+                  }
                 </p>
               </div>
             </div>
