@@ -81,10 +81,6 @@ const troubleshootingTips = [
     icon: <Smartphone className="text-orange-600" size={24} />,
     issues: [
       {
-        q: "How to install the App on my Phone?",
-        a: "On Android, tap 'Install App' in our sidebar menu. On iPhone, open the site in Safari, tap the 'Share' icon (bottom middle), and select 'Add to Home Screen'. This allows you to use it like a native app."
-      },
-      {
         q: "Logged out unexpectedly?",
         a: "For security, sessions expire after significant inactivity. Simply log back in with your credentials to resume your work. Your data is always saved."
       }

@@ -27,7 +27,8 @@
     <meta name="theme-color" content="#2563eb" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="manifest" href="/manifest.json?v=21" />
+    <meta name="apple-mobile-web-app-title" content="Dental Bill" />
+    <link rel="manifest" href="/manifest.json" />
     
     <!-- Prefetch/Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,80 +36,12 @@
     <link rel="preconnect" href="https://firestore.googleapis.com" />
 
     <!-- Logo & Favicons -->
-    <link rel="apple-touch-icon" href="/logo.svg?v=21" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg?v=21" />
     <link rel="icon" href="/logo.svg?v=21" />
-    <style>
-      #pwa-loader {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 10000;
-        transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
-      }
-      #pwa-loader.hidden {
-        opacity: 0;
-        visibility: hidden;
-      }
-      .loader-container {
-        width: 120px;
-        height: 120px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        animation: pulse 2s infinite ease-in-out;
-      }
-      .loader-icon {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-      .loader-text {
-        color: white;
-        font-family: system-ui, -apple-system, sans-serif;
-        font-weight: 700;
-        font-size: 1.25rem;
-        letter-spacing: -0.025em;
-      }
-      @keyframes pulse {
-        0% { transform: scale(0.95); opacity: 0.8; }
-        50% { transform: scale(1.05); opacity: 1; }
-        100% { transform: scale(0.95); opacity: 0.8; }
-      }
-    </style>
   </head>
   <body>
-    <div id="pwa-loader">
-      <div class="loader-container">
-        <img 
-          src="/logo.svg?v=21" 
-          alt="Dental Logo" 
-          class="loader-icon"
-        />
-      </div>
-      <div class="loader-text">Instant Dental Bill</div>
-    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').then(registration => {
-            console.log('SW registered: ', registration);
-          }).catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-          });
-        });
-      }
-    </script>
   </body>
 </html>
 

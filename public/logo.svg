@@ -1,14 +1,13 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" fill="#2563EB"/>
   <text 
     x="50%" 
     y="58%" 
     dominant-baseline="middle" 
     text-anchor="middle" 
-    fill="white" 
+    fill="currentColor" 
     font-family="sans-serif" 
     font-weight="900" 
-    font-size="260px" 
+    font-size="280px" 
     letter-spacing="-14px"
   >
     IdB

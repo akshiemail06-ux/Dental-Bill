@@ -9,10 +9,10 @@ import ScrollToTop from './components/ScrollToTop';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ClinicProvider, useClinic } from './contexts/ClinicContext';
 import { SubscriptionProvider } from './contexts/SubscriptionContext';
-import { PWAProvider } from './contexts/PWAContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Toaster } from '@/components/ui/sonner';
 import { Loader2 } from 'lucide-react';
+import { Logo } from './components/Logo';
 
 // Lazy load pages for fast initial loading experience
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -39,10 +39,15 @@ const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage'));
 const SEOLandingIndiaPage = lazy(() => import('./pages/SEOLandingIndiaPage'));
 
 const LoadingFallback = ({ message = "Loading..." }: { message?: string }) => (
-  <div className="flex h-screen w-full flex-col items-center justify-center bg-gray-50">
-    <div className="flex items-center gap-2 text-gray-500 font-medium">
-      <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
-      {message}
+  <div className="flex h-screen w-full flex-col items-center justify-center bg-white">
+    <div className="flex flex-col items-center gap-4">
+      <div className="animate-pulse">
+        <Logo showText={false} iconClassName="h-16 w-16" />
+      </div>
+      <div className="flex items-center gap-2 text-gray-500 font-medium">
+        <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
+        {message}
+      </div>
     </div>
   </div>
 );
@@ -90,32 +95,6 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function App() {
-  React.useEffect(() => {
-    const loader = document.getElementById('pwa-loader');
-    if (loader) {
-      // Faster hide for the static loader
-      const hideLoader = () => {
-        loader.classList.add('hidden');
-        setTimeout(() => {
-          loader.style.display = 'none';
-        }, 300);
-      };
-      
-      // If document is already loaded
-      if (document.readyState === 'complete') {
-        hideLoader();
-      } else {
-        window.addEventListener('load', hideLoader);
-        // Fallback timeout
-        const timeout = setTimeout(hideLoader, 1500);
-        return () => {
-          window.removeEventListener('load', hideLoader);
-          clearTimeout(timeout);
-        };
-      }
-    }
-  }, []);
-
   return (
     <ErrorBoundary>
       <Router>
@@ -123,8 +102,7 @@ export default function App() {
         <AuthProvider>
           <SubscriptionProvider>
               <ClinicProvider>
-                <PWAProvider>
-                  <Suspense fallback={<LoadingFallback />}>
+            <Suspense fallback={<LoadingFallback />}>
                     <Routes>
                       <Route path="/dental-clinic-software-india" element={<SEOLandingIndiaPage />} />
                       <Route path="/" element={<LandingPage />} />
@@ -222,7 +200,6 @@ export default function App() {
                 </Routes>
               </Suspense>
               <Toaster position="top-right" richColors />
-            </PWAProvider>
           </ClinicProvider>
         </SubscriptionProvider>
       </AuthProvider>

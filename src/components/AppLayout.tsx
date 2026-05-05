@@ -32,10 +32,10 @@ import { Badge } from '@/components/ui/badge';
 import { useClinic } from '../contexts/ClinicContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSubscription } from '../contexts/SubscriptionContext';
-import { usePWA } from '../contexts/PWAContext';
 import { Crown, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
+import BookmarkGuide from './BookmarkGuide';
 import DemoBanner from './DemoBanner';
 import DemoWelcomePopup from './DemoWelcomePopup';
 import TrialEndedModal from './TrialEndedModal';
@@ -44,12 +44,12 @@ import { Logo } from './Logo';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isBookmarkGuideOpen, setIsBookmarkGuideOpen] = React.useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { clinic } = useClinic();
   const { user, isDemo, setIsDemo } = useAuth();
   const { subscription, isTrialExpired } = useSubscription();
-  const { isInstallable, installApp } = usePWA();
   const ADMIN_EMAILS = ["akshiemail06@gmail.com", "akshitb948@gmail.com"];
 
 
@@ -172,18 +172,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             })}
           </nav>
 
-          {/* Install App & Logout */}
+          {/* Logout */}
           <div className="p-4 border-t space-y-2">
-            {isInstallable && (
-              <Button 
-                variant="outline" 
-                className="w-full justify-start gap-3 border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
-                onClick={installApp}
-              >
-                <Download size={18} />
-                Install App
-              </Button>
-            )}
+            <Button 
+              variant="outline" 
+              className="w-full justify-start gap-3 border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+              onClick={() => setIsBookmarkGuideOpen(true)}
+            >
+              <Download size={18} />
+              Add to Home Screen
+            </Button>
             <Button 
               variant="ghost" 
               className="w-full justify-start gap-3 text-gray-600 hover:text-red-600 hover:bg-red-50"
@@ -251,6 +249,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         )}
       </main>
+
+      {/* Modals & Popups */}
+      <BookmarkGuide open={isBookmarkGuideOpen} onOpenChange={setIsBookmarkGuideOpen} />
+      <DemoWelcomePopup />
+      {isTrialExpired && user && !isDemo && <TrialEndedModal />}
     </div>
   </div>
   );
