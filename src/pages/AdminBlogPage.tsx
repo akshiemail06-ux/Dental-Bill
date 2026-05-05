@@ -16,15 +16,13 @@ import {
   Eye, 
   FileText,
   AlertCircle,
-  Image as ImageIcon,
+  ImageIcon,
   Copy,
   Upload,
   Loader2,
   Globe,
   Search
 } from 'lucide-react';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/lib/firebase';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ensureDate } from '@/lib/utils';
@@ -151,6 +149,7 @@ export default function AdminBlogPage() {
     });
   };
 
+  // Image Upload Utility for Blog Content (Base64 fallback as Storage is disabled)
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -161,22 +160,33 @@ export default function AdminBlogPage() {
     }
 
     setUploading(true);
-    const toastId = toast.loading('Optimizing and uploading image...');
+    const toastId = toast.loading('Optimizing and processing image...');
 
     try {
-      // Compress image before upload to solve "taking too much time" issue
+      // Compress image before conversion
       const compressedBlob = await compressImage(file);
       
-      const fileName = file.name.split('.')[0] + '.jpg'; // Convert to jpg for better compression
-      const storageRef = ref(storage, `blog_images/${Date.now()}_${fileName}`);
-      
-      await uploadBytes(storageRef, compressedBlob);
-      const url = await getDownloadURL(storageRef);
-      setLastUploadedUrl(url);
-      toast.success('Image optimized & uploaded successfully', { id: toastId });
+      // Convert to base64 instead of uploading to Firebase Storage
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(compressedBlob);
+      });
+
+      const base64Url = await base64Promise;
+
+      // Check size - Firestore has a 1MB limit per document
+      if (base64Url.length > 800000) { // Safety margin
+        toast.error('Image is too large for database storage even after compression. Please use a smaller image or an external URL.', { id: toastId });
+        return;
+      }
+
+      setLastUploadedUrl(base64Url);
+      toast.success('Image optimized & converted to base64 successfully', { id: toastId });
     } catch (error) {
-      console.error('Upload error:', error);
-      toast.error('Failed to upload image', { id: toastId });
+      console.error('Processing error:', error);
+      toast.error('Failed to process image', { id: toastId });
     } finally {
       setUploading(false);
     }
