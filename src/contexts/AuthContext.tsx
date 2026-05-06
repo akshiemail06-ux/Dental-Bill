@@ -54,7 +54,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (docSnap.exists()) {
         const data = docSnap.data();
         console.log(`Profile loaded for UID: ${user.uid}, Clinic: ${data.clinicId || 'None yet'}`);
-        setProfile({ uid: user.uid, ...data } as UserProfile);
+        
+        let profileData = { uid: user.uid, ...data } as UserProfile;
+
+        // Special handling for lifetime access user
+        if (user.email === 'akshitb948@gmail.com') {
+          profileData = {
+            ...profileData,
+            subscription: {
+              ...profileData.subscription,
+              planType: 'pro',
+              billLimit: 'unlimited',
+              updatedAt: profileData.subscription?.updatedAt || new Date()
+            } as any
+          };
+        }
+
+        setProfile(profileData);
         setLoading(false);
       } else {
         console.log("No profile found for user, creating one...");
