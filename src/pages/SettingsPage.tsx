@@ -4,7 +4,7 @@ import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useClinic } from '../contexts/ClinicContext';
 import { useAuth } from '../contexts/AuthContext';
-import { handleFirestoreError } from '../lib/error-handler';
+import { handleFirestoreError, OperationType } from '../lib/error-handler';
 import AppLayout from '../components/AppLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -324,9 +324,22 @@ export default function SettingsPage() {
       const uppercaseClinicName = formData.name.trim().toUpperCase();
       const uppercaseAddress = (formData.address || '').trim().toUpperCase();
       
+      // Normalize doctor name: Ensure exactly one "DR. " prefix and uppercase
+      const normalizeDoctorName = (name: string) => {
+        if (!name) return '';
+        let cleaned = name.trim().toUpperCase();
+        // Remove all variations of DR prefix at the start
+        while (cleaned.match(/^(DR\.?|DR)\s+/i)) {
+          cleaned = cleaned.replace(/^(DR\.?|DR)\s+/i, '');
+        }
+        // Also handle cases with weird dots if they exist
+        cleaned = cleaned.replace(/^\.+/g, ''); 
+        return `DR. ${cleaned.trim()}`;
+      };
+
       const formattedDoctors = doctors.map(d => ({
         id: d.id,
-        name: d.name.trim().toUpperCase().startsWith('DR. ') ? d.name.trim().toUpperCase() : `DR. ${d.name.trim().toUpperCase()}`,
+        name: normalizeDoctorName(d.name),
         qualification: (d.qualification || '').trim().toUpperCase(),
         registrationNumber: (d.registrationNumber || d.regNumber || '').trim().toUpperCase(),
         isMain: !!d.isMain,

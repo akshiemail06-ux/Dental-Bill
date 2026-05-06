@@ -37,14 +37,19 @@ function SelectTrigger({ className, children, value, onValueChange, ...props }: 
       "flex h-9 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
       className
     )}>
-      {children}
+      {React.Children.map(children, child => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child as React.ReactElement<any>, { value });
+        }
+        return child;
+      })}
       <ChevronDownIcon className="h-4 w-4 opacity-50" />
     </div>
   )
 }
 
 function SelectValue({ placeholder, children, value }: any) {
-  return <span className="block truncate">{value ? children : placeholder}</span>
+  return <span className="block truncate">{children || value || placeholder}</span>
 }
 
 function SelectContent({ children, value, onValueChange }: any) {

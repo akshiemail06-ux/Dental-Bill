@@ -510,7 +510,9 @@ export default function ReportsPage() {
             <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
               <Select value={selectedMonth} onValueChange={setSelectedMonth}>
                 <SelectTrigger className="w-full sm:w-[150px] h-11 rounded-xl border-gray-200 bg-white shadow-sm">
-                  <SelectValue placeholder="Month" />
+                  <SelectValue>
+                    {months.find(m => m.value === selectedMonth)?.label || "Month"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="rounded-xl border-gray-100 shadow-xl">
                   {months.map(m => (
@@ -522,7 +524,7 @@ export default function ReportsPage() {
               {selectedMonth !== 'custom' && (
                 <Select value={selectedYear} onValueChange={setSelectedYear}>
                   <SelectTrigger className="w-full sm:w-[120px] h-11 rounded-xl border-gray-200 bg-white shadow-sm">
-                    <SelectValue placeholder="Year" />
+                    <SelectValue>{selectedYear}</SelectValue>
                   </SelectTrigger>
                   <SelectContent className="rounded-xl border-gray-100 shadow-xl">
                     {availableYears.map(year => (

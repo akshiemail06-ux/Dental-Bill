@@ -340,6 +340,19 @@ export default function CreateBillPage() {
     const loadingToast = toast.loading(isDraft ? 'Saving draft...' : 'Generating bill...');
     
       try {
+        // Normalize doctor name: Ensure exactly one "DR. " prefix and uppercase
+        const normalizeDoctorName = (name: string) => {
+          if (!name) return '';
+          let cleaned = name.trim().toUpperCase();
+          // Remove all variations of DR prefix at the start
+          while (cleaned.match(/^(DR\.?|DR)\s+/i)) {
+            cleaned = cleaned.replace(/^(DR\.?|DR)\s+/i, '');
+          }
+          // Also handle cases with weird dots if they exist
+          cleaned = cleaned.replace(/^\.+/g, ''); 
+          return `DR. ${cleaned.trim()}`;
+        };
+
         const selectedDoctor = clinic?.doctors?.find(d => d.id === selectedDoctorId);
         
         // Clean doctor data for Firestore (remove undefined and local-only assets)
@@ -347,7 +360,7 @@ export default function CreateBillPage() {
         if (selectedDoctor) {
           doctorData = {
             id: selectedDoctor.id,
-            name: selectedDoctor.name || '',
+            name: normalizeDoctorName(selectedDoctor.name || ''),
             qualification: selectedDoctor.qualification || '',
             registrationNumber: (selectedDoctor.registrationNumber || selectedDoctor.regNumber || '').trim(),
             isMain: !!selectedDoctor.isMain
@@ -483,7 +496,7 @@ export default function CreateBillPage() {
                   <Label>Payment Method</Label>
                   <Select value={paymentMethodForUpdate} onValueChange={setPaymentMethodForUpdate}>
                     <SelectTrigger className="h-12 rounded-xl">
-                      <SelectValue />
+                      <SelectValue>{paymentMethodForUpdate}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Cash">Cash</SelectItem>
@@ -650,7 +663,7 @@ export default function CreateBillPage() {
                   <Label>Treatment Done By</Label>
                   <Select value={selectedDoctorId} onValueChange={setSelectedDoctorId}>
                     <SelectTrigger className="h-10 rounded-md">
-                      <SelectValue placeholder="Select Doctor">
+                      <SelectValue>
                         {clinic?.doctors?.find(d => d.id === selectedDoctorId)?.name || "Select Doctor"}
                       </SelectValue>
                     </SelectTrigger>
@@ -856,7 +869,12 @@ export default function CreateBillPage() {
                   <Label>Payment Status</Label>
                   <Select value={paymentStatus} onValueChange={(val: any) => setPaymentStatus(val)}>
                     <SelectTrigger className="h-11 rounded-xl">
-                      <SelectValue />
+                      <SelectValue>
+                        {paymentStatus === 'paid' ? 'Paid' : 
+                         paymentStatus === 'unpaid' ? 'Unpaid' : 
+                         paymentStatus === 'partial' ? 'Partial Payment' : 
+                         paymentStatus === 'draft' ? 'Draft' : ''}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="paid">Paid</SelectItem>
@@ -886,7 +904,7 @@ export default function CreateBillPage() {
                   <Label>Payment Method</Label>
                   <Select value={paymentMethod} onValueChange={setPaymentMethod}>
                     <SelectTrigger className="h-11 rounded-xl">
-                      <SelectValue />
+                      <SelectValue>{paymentMethod}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Cash">Cash</SelectItem>
