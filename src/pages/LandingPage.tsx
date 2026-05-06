@@ -23,6 +23,7 @@ import Footer from '../components/Footer';
 import PricingSection from '../components/PricingSection';
 import { Logo } from '../components/Logo';
 import { getWhatsAppUrl } from '../lib/utils';
+import AIChatBot from '../components/AIChatBot';
 
 export default function LandingPage() {
   const [showDemoDialog, setShowDemoDialog] = useState(false);
@@ -316,7 +317,7 @@ export default function LandingPage() {
               <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Focused On What Matters Most For A Busy Dental Practice.</p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {[
                 {
                   title: "Instant Bills",
@@ -337,6 +338,16 @@ export default function LandingPage() {
                   title: "Growth Reports",
                   description: "See your daily, monthly and annual revenue collection trends.",
                   icon: <BarChart3 className="text-blue-600" size={24} />
+                },
+                {
+                  title: "WhatsApp Reminders",
+                  description: "Prefilled WhatsApp reminders for pending payments and ortho appointments.",
+                  icon: <MessageCircle className="text-blue-600" size={24} />
+                },
+                {
+                  title: "Branded Invoices",
+                  description: "Branded invoices with your clinic branding stamp, logo, and signature. One time easy setup.",
+                  icon: <Sparkles className="text-blue-600" size={24} />
                 }
               ].map((feature, idx) => (
                 <div key={idx} className="rounded-3xl bg-white p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all group">
@@ -447,6 +458,7 @@ export default function LandingPage() {
       </main>
 
       <Footer />
+      <AIChatBot />
     </div>
   );
 }
