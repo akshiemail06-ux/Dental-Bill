@@ -346,7 +346,7 @@ export default function LandingPage() {
                 },
                 {
                   title: "Branded Invoices",
-                  description: "Branded invoices with your clinic branding stamp, logo, and signature. One time easy setup.",
+                  description: "Branded invoices with your clinic branding stamp, logo, and signature. One-time easy setup.",
                   icon: <Sparkles className="text-blue-600" size={24} />
                 }
               ].map((feature, idx) => (

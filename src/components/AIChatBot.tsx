@@ -23,10 +23,9 @@ Key Features:
 - Ortho Tracker: Manage braces cases, stages, and monthly payment installments.
 - Patient Files: Securely store and access clinic records from any device.
 - Growth Reports: Dashboard for daily, monthly, and annual revenue collection trends.
-- Branded Invoices: Branded invoices with your clinic branding stamp, logo, and signature. One time easy setup.
-- Clinic Branding: One-time setup for stamp, logo, and signature.
+- Branded Invoices: Branded invoices with your clinic branding stamp, logo, and signature. One-time easy setup.
 - WhatsApp Reminders: Prefilled WhatsApp reminders for pending payments and ortho appointments (Manual reminders with prefilled messages to ensure transparency).
-- Security: AES-256 Encryption, Private Cloud Storage, Regular Backups.
+- Security: Private Cloud Storage, Regular Backups.
 
 Pricing Plans:
 1. Basic Plan: ₹299/month

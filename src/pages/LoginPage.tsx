@@ -155,7 +155,7 @@ export default function LoginPage() {
                 required 
               />
             </div>
-            <Button className="w-full bg-blue-600 hover:bg-blue-700" type="submit" disabled={loading}>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 h-11" type="submit" disabled={loading}>
               {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Login'}
             </Button>
           </form>
@@ -165,13 +165,13 @@ export default function LoginPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">Or continue with</span>
+              <span className="bg-white px-2 text-gray-400">Or continue with</span>
             </div>
           </div>
 
           <Button 
             variant="outline" 
-            className="w-full" 
+            className="w-full h-11 border-gray-200" 
             onClick={handleGoogleSignIn}
             disabled={loading}
             type="button"
@@ -196,14 +196,27 @@ export default function LoginPage() {
             </svg>
             Google
           </Button>
+
+          <div className="pt-2 border-t border-gray-50 flex justify-center">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-50/50 border border-green-100/50">
+              <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+              <span className="text-[10px] font-bold text-green-700 uppercase tracking-wider">SSL Secure Login Enabled</span>
+            </div>
+          </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col gap-4 pb-8">
           <p className="w-full text-center text-sm text-gray-600">
             Don't have an account?{' '}
             <Link to="/signup" className="font-medium text-blue-600 hover:underline">
               Sign up
             </Link>
           </p>
+          <div className="flex items-center justify-center gap-2 opacity-50 grayscale hover:grayscale-0 transition-all cursor-default">
+            <div className="flex items-center gap-1">
+              <svg className="w-3 h-3 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 11H7l5-7 5 7h-4l5 7H7l4-7z"/></svg>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-gray-600">Secure Protocol</span>
+            </div>
+          </div>
         </CardFooter>
       </Card>
       </div>
