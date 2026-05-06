@@ -49,33 +49,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { clinic } = useClinic();
-  const { user, profile, isDemo, setIsDemo } = useAuth();
+  const { user, isDemo, setIsDemo } = useAuth();
   const { subscription, isTrialExpired } = useSubscription();
   const ADMIN_EMAILS = ["akshiemail06@gmail.com", "akshitb948@gmail.com"];
 
-  // Handle lifetime access notification for akshitb948@gmail.com
-  React.useEffect(() => {
-    if (user?.email === 'akshitb948@gmail.com' && profile && !(profile as any).lifetimeNotificationShown) {
-      toast.success("Lifetime Access Granted!", {
-        description: "You have now lifetime unlimited access. Enjoy!",
-        duration: 10000,
-      });
-
-      // Mark as shown in Firestore
-      const updateShown = async () => {
-        try {
-          const { doc, updateDoc } = await import('firebase/firestore');
-          const { db } = await import('../lib/firebase');
-          await updateDoc(doc(db, 'users', user.uid), {
-            lifetimeNotificationShown: true
-          });
-        } catch (err) {
-          console.error("Failed to update notification status:", err);
-        }
-      };
-      updateShown();
-    }
-  }, [user, profile]);
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
